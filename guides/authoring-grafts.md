@@ -189,7 +189,7 @@ delegate). Allowed keys:
 | `type` | Renders as | Notes |
 |---|---|---|
 | `text` | single-line text input | Default choice for short strings |
-| `textarea` | multi-line text input | For long prose |
+| `textarea` | multi-line text input | For long prose. Native wizard fields `wizard:personality` and `wizard:vibe` render as a Markdown editor (write + live preview); custom GRAFT-owned `textarea` fields render as a plain textarea. |
 | `secret` | masked input | Never logged. Pair with a `binding` under `settings.secrets.*` |
 | `select` | dropdown | Requires `options: [{value, label}, …]` |
 | `toggle` | segmented two-way control | Requires `options` (typically two entries) |
@@ -388,15 +388,15 @@ These are the inputs the wizard renders itself. Targeting one merges
 your validation / default into the existing input instead of rendering
 a duplicate.
 
-| `owned_by` | Step | Type |
-|---|---|---|
-| `wizard:name` | identity | text |
-| `wizard:vibe` | identity | text |
-| `wizard:personality` | identity | textarea |
-| `wizard:knowledge_seed` | personality | textarea-list |
-| `wizard:model` | model | select |
-| `wizard:thinking` | model | radio-cards |
-| `wizard:channels` | channels | toggle-list |
+| `owned_by` | Step | Type | Notes |
+|---|---|---|---|
+| `wizard:name` | identity | text | |
+| `wizard:vibe` | identity | textarea | Renders as a Markdown editor (compact, ~160 px) |
+| `wizard:personality` | identity | textarea | Renders as a Markdown editor (tall, ~280 px); maps to `SOUL.md` |
+| `wizard:knowledge_seed` | personality | textarea-list | |
+| `wizard:model` | model | select | |
+| `wizard:thinking` | model | radio-cards | |
+| `wizard:channels` | channels | toggle-list | |
 
 ### Channel slugs (for `owned_by: "channel:<slug>"`)
 
