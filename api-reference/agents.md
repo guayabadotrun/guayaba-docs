@@ -407,7 +407,11 @@ POST /agents/{id}/channels/telegram/pairing/reject
 
 ## Files
 
-Upload files to an agent's knowledge base. Requires `files` scope. The agent must be running.
+All file endpoints require `files` scope. The agent must be running.
+
+### Upload a File
+
+Upload a file to the agent's workspace so the agent can reference it during conversations.
 
 ```
 POST /agents/{id}/files
@@ -420,6 +424,84 @@ POST /agents/{id}/files
   "mimeType": "text/plain"
 }
 ```
+
+### List Workspace Files
+
+Returns the immediate children (files and sub-directories) of a workspace directory. Use this to build a file tree UI or inspect what the agent has generated.
+
+```
+GET /agents/{id}/files/list
+```
+
+**Query parameters**:
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `path` | string | `.` | Directory path relative to the workspace root. Must not contain `..`. |
+
+```bash
+curl "https://api.guayaba.run/api/v1/agents/550e8400-.../files/list?path=." \
+  -H "Authorization: Bearer g_agent_YOUR_KEY"
+```
+
+**Response** (`200`):
+```json
+{
+  "entries": [
+    {
+      "name": "SOUL.md",
+      "path": "SOUL.md",
+      "type": "file",
+      "size": 1234,
+      "modified_at": "2026-05-01T08:00:00.000Z"
+    },
+    {
+      "name": "skills",
+      "path": "skills",
+      "type": "dir",
+      "modified_at": "2026-04-30T12:00:00.000Z"
+    }
+  ],
+  "truncated": false
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `entries[].name` | string | Entry name |
+| `entries[].path` | string | Path relative to the workspace root (forward slashes) |
+| `entries[].type` | string | `"file"` or `"dir"` |
+| `entries[].size` | integer | File size in bytes. Absent for directories. |
+| `entries[].modified_at` | string | ISO 8601 last-modified timestamp |
+| `truncated` | boolean | `true` when the directory has more than 1 000 entries and the response was capped |
+
+Call this endpoint recursively (expanding directories on demand) to browse the full workspace tree. Symlinks are never included in the response.
+
+**Error codes**: `422` if the path contains `..` or exceeds 1 024 characters; `503` if the agent is not running.
+
+### Download a Workspace File
+
+Downloads a single file from the agent's workspace.
+
+```
+GET /agents/{id}/files/download
+```
+
+**Query parameters**:
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `path` | string | Yes | File path relative to the workspace root. Must not contain `..`. |
+
+```bash
+curl "https://api.guayaba.run/api/v1/agents/550e8400-.../files/download?path=output/report.pdf" \
+  -H "Authorization: Bearer g_agent_YOUR_KEY" \
+  -o report.pdf
+```
+
+The response is the raw file content with the appropriate `Content-Type` and a `Content-Disposition: attachment` header. The endpoint streams the file directly — no base64 encoding.
+
+**Error codes**: `422` if the path contains `..` or exceeds 1 024 characters; `404` if the file does not exist; `503` if the agent is not running.
 
 ---
 
