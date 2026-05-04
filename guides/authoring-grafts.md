@@ -215,6 +215,61 @@ is never persisted on the agent itself. That's how `company_name` and
 `personality` and `extra_instructions`, but no `agent.company_name`
 column ever exists.
 
+### `materialize` — turning a stored secret into a usable credential
+
+Only valid on `type: secret` fields whose `binding` starts with
+`settings.secrets.`. Tells the launcher how to convert the stored
+secret value into the form the skill actually expects — a credential
+file on disk, or a one-shot auth command — on every agent boot and
+config reload.
+
+Two shapes:
+
+**`file`** — write the secret to a path:
+
+```jsonc
+{
+  "id": "notion_api_key",
+  "type": "secret",
+  "binding": "settings.secrets.NOTION_API_KEY",
+  "materialize": {
+    "type": "file",
+    "path": "~/.config/notion/api_key",
+    "mode": "0600",
+    "template": "{{value}}"
+  }
+}
+```
+
+**`command`** — pipe the secret into a one-shot setup command:
+
+```jsonc
+{
+  "id": "github_token",
+  "type": "secret",
+  "binding": "settings.secrets.GITHUB_TOKEN",
+  "materialize": {
+    "type": "command",
+    "run": ["gh", "auth", "login", "--hostname", "github.com",
+            "--git-protocol", "https", "--with-token"],
+    "stdin": "{{value}}",
+    "timeout_ms": 15000
+  }
+}
+```
+
+`{{value}}` expands to the secret string in `template`, `stdin`, and
+each `run` token. The launcher re-runs every `materialize` spec on
+`reload-config`, so secret rotations take effect without restarting
+the container.
+
+> **`materialize` vs `install.sh`.** Use `materialize` for
+> credential-shape conversion (auth files, login commands). Use
+> `install.sh` for binary/runtime setup (`apt-get install gh`) that
+> must happen before any materialize command can run. Mixing the two
+> is a smell: a `materialize.command` that calls a binary not yet on
+> `PATH` will fail silently.
+
 ### `owned_by` — who renders the field
 
 | Value | Meaning |
@@ -310,9 +365,9 @@ step is allowed — the wizard creates a synthetic step on the fly.
 
 ## Variable interpolation — `{{token}}` rules
 
-The same engine runs server-side (`TemplateInterpolator` in PHP) and
-client-side (`templateInterpolator.ts`) so the preview matches the
-final agent.
+The same interpolation engine runs server-side and client-side, so
+the live preview in the install wizard matches the final agent
+definition exactly.
 
 - Token shape: `{{` + optional whitespace + `field_id` + optional whitespace + `}}`. The `field_id` must match `/^[A-Za-z_][A-Za-z0-9_]*$/`.
 - The id MUST be declared in `fields[]`. Otherwise `422` at validate / push time.
@@ -402,12 +457,16 @@ a duplicate.
 
 | `owned_by` | Where it renders |
 |---|---|
-| `channel:chat` | Channels step → web-chat secret form |
 | `channel:telegram` | Channels step → Telegram secret form |
 
 A field flagged with `channel:<slug>` is rendered by that channel's
 own form (not by the GRAFT section). Use this to pre-label, pre-fill,
 or constrain a channel secret without owning its layout.
+
+> **`chat` is not a channel.** The web-chat transport is always on and
+> has no secret form. `channel:chat` is not a valid value and will be
+> silently ignored by the wizard. Only `telegram` is a supported
+> channel slug today.
 
 ---
 
@@ -476,7 +535,7 @@ graft.tar.gz
 ├── metadata.json          ← marketplace manifest (slug, version, name, …)
 ├── schema.json            ← the document described in this guide
 ├── README.md              ← user-facing description
-├── TOOLS.md               ← optional: managed tools doc
+├── TOOLS.md               ← optional: injected into the agent's TOOLS.md
 ├── install.sh             ← optional: first-apply binary setup hook
 └── skills/                ← only present if the GRAFT bundles ≥1 skill
     ├── <name>.tar.gz
@@ -484,9 +543,75 @@ graft.tar.gz
     └── …
 ```
 
-The CLI generates `schema.json` for you (with sidecars inlined and
-fields auto-derived from the workspace) — most authors never edit it
-by hand. This guide is here for the moments where you do.
+### `TOOLS.md` — shipping tool notes with your GRAFT
+
+If your workspace has a top-level `TOOLS.md`, `graft init` copies it
+into the scaffold and `graft push` includes it in the bundle. On first
+boot the launcher **injects it as a managed block** into the new
+agent's own `TOOLS.md`:
+
+```
+<!-- BEGIN MANAGED:graft:tools -->
+… your TOOLS.md content …
+<!-- END MANAGED:graft:tools -->
+```
+
+The agent's notes outside that block are preserved across re-applies,
+so the agent can extend `TOOLS.md` without losing your contribution.
+
+Use `TOOLS.md` to document which CLIs the GRAFT expects (`gh`, `jq`,
+…), which env vars back which command, or any host/account/path the
+skills assume. Skip it if you have nothing to say — it is optional.
+
+### Scaffold sidecars (`personality.md`, `vibe.md`, `extra_instructions.md`)
+
+`graft init` creates **empty stub files** for each prose field — it
+does NOT pre-fill them with the workspace content. You must write the
+template text yourself (and drop any `{{placeholder}}` tokens for the
+user to fill in). The stubs start with an HTML comment that reminds
+you which workspace file each one maps to; delete it before pushing.
+
+| Scaffold file | Maps to workspace | `defaults` key |
+|---|---|---|
+| `personality.md` | `SOUL.md` | `personality` |
+| `vibe.md` | `IDENTITY.md` | `vibe` |
+| `extra_instructions.md` | `AGENTS.md` | `settings.extra_instructions` |
+
+Skills and `TOOLS.md` are copied verbatim from the workspace;
+`install.sh` is also copied if present.
+
+---
+
+## What happens at first boot (the full apply sequence)
+
+When a user creates an agent from your GRAFT, the agent's launcher
+runs the apply sequence **once**, in this order:
+
+1. **Schema is merged.** `defaults` (with all `{{token}}` substitutions)
+   are written into the agent definition. Skills are copied to
+   `workspace/skills/`.
+
+2. **`TOOLS.md` is injected** (if the bundle contains one). The launcher
+   inserts it as a managed block inside the agent's own `TOOLS.md`,
+   preserving anything the agent has written outside that block.
+
+3. **`install.sh` runs** (if present). The script receives a working
+   directory pointing at the extracted bundle and runs as root. This is
+   where you install system binaries the skills depend on. The entire
+   apply fails (and is retried on next boot) if the script exits non-zero.
+
+4. **`materialize` specs are persisted** from every `secret` field that
+   declares one. The specs are stored to disk; they run now and on every
+   `reload-config` from this point forward.
+
+5. **The `.graft-applied` marker is written.** All future boots skip
+   steps 1–4. Delete the marker to force a full re-apply (e.g. for GRAFT
+   upgrades — this is not yet a user-facing feature, but good to know for
+   debugging).
+
+The apply sequence is **transparent to the user** — it happens in the
+background while the agent container starts. The user sees the agent
+status flip from *pending* to *running* when the sequence completes.
 
 ---
 
