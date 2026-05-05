@@ -51,7 +51,7 @@ Scopes control what an agent key can do. Master keys bypass all scope checks.
 
 ## Subscription Requirement
 
-All endpoints require the key owner to have an **active subscription** (status: `active` or `trialing`). If the subscription is inactive, every request returns:
+All endpoints require the key owner to have an **active subscription** (status: `active` or `trialing`). New accounts are automatically enrolled on the free **Hobby** plan at registration, so this requirement is met from day one — no additional setup needed. If the subscription is inactive, every request returns:
 
 ```
 403 Forbidden

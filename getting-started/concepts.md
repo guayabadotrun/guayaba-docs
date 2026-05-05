@@ -68,7 +68,7 @@ Credits are the billing unit for resource-intensive operations. They are checked
 | Stop / Pause / Delete | Free |
 | All read operations | Free |
 
-Credits come from your subscription allowance (renewed each billing period) plus any top-up purchases. Check your balance at any time from **Settings → Billing** or via `GET /api/v1/billing/credits`.
+Credits come from your subscription allowance (renewed each billing period) plus any top-up purchases. New accounts receive a one-time welcome grant of **2,000 credits** on the Hobby plan. Check your balance at any time from **Settings → Billing** or via `GET /api/v1/billing/credits`.
 
 ---
 

@@ -4,7 +4,7 @@ Get a working AI agent up and running in under 5 minutes.
 
 ## 1. Create an account
 
-Go to [app.guayaba.run](https://app.guayaba.run) and sign up. A subscription is required to use the platform.
+Go to [app.guayaba.run](https://app.guayaba.run) and sign up. Your account is automatically enrolled on the **Hobby** plan — no credit card required. You'll receive 2,000 welcome credits to get started.
 
 ## 2. Create your first agent
 

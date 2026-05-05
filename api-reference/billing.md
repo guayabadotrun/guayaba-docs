@@ -80,9 +80,33 @@ When you don't have enough credits for an operation, the API returns:
 
 The operation is **not** executed. No credits are deducted.
 
+## Subscription Plans
+
+| Plan | Price | Running time | Agents | Monthly credits |
+|---|---|---|---|---|
+| **Hobby** | Free | 1 hour/day | 1 | 2,000 (welcome grant) |
+| **Early Access** | $4.90/mo | Unlimited | 1 | 3,000 |
+| **Pro** | $49.00/mo | Unlimited | 3 | 10,000 |
+
+Every new account is automatically enrolled on the **Hobby** plan and receives 2,000 welcome credits immediately — no credit card required. You can upgrade at any time from the billing dashboard.
+
+### Daily running-time limit (Hobby)
+
+Hobby accounts may run agents for a combined total of **1 hour per UTC day** across all their agents. When the limit is reached, running agents are automatically stopped and the agent start endpoint returns:
+
+```
+403 Forbidden
+{
+  "error": "Forbidden",
+  "message": "Your Hobby plan includes 60 minutes of agent running time per day. You have used your full allowance for today. Your limit resets at midnight UTC."
+}
+```
+
+The counter resets at **midnight UTC** every day.
+
 ## Subscription Requirement
 
-All API endpoints require an active subscription (`active` or `trialing` status). If your subscription is canceled, past due, or absent:
+All public API endpoints require an active subscription (`active` or `trialing` status). New accounts are always enrolled on Hobby (active) at registration, so this condition is met automatically. If your subscription is canceled, past due, or absent:
 
 ```
 403 Forbidden
