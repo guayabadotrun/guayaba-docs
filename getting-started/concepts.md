@@ -16,6 +16,8 @@ An agent is the central unit. It has:
 
 Agents run in isolated containers and can be started, stopped, paused, and reloaded independently.
 
+The dashboard includes a **Resources** tab on each agent and an **Observability** section for account-wide monitoring. In production, infrastructure graphs come from AWS Container Insights. In local or non-AWS environments, infrastructure graphs may be unavailable, but LLM usage is still shown from Guayaba's internal usage snapshots.
+
 ### Agent status
 
 | Status | Meaning |
