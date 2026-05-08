@@ -363,11 +363,12 @@ curl -X POST https://api.guayaba.run/api/v1/grafts \
 ### Upload an icon or cover image
 
 ```
-PUT /grafts/{slug}/assets/{type}
+POST /grafts/{slug}/assets/{type}
 ```
 
 Where `type` is `icon` or `cover`. The body is `multipart/form-data` with
-a single `file` field.
+a single `file` field. A real `PUT` request to the same path is also accepted
+for REST clients, but the CLI and manager UI use plain `POST`.
 
 | Type    | Allowed MIME types                              | Max size |
 |---------|-------------------------------------------------|----------|
@@ -380,7 +381,7 @@ previous file in place and sweeps any stale extensions for that type
 (so switching from `.png` to `.webp` won't leave both behind).
 
 ```bash
-curl -X PUT https://api.guayaba.run/api/v1/grafts/my-graft/assets/icon \
+curl -X POST https://api.guayaba.run/api/v1/grafts/my-graft/assets/icon \
   -H "Authorization: Bearer g_master_YOUR_KEY" \
   -F "file=@./icon.png"
 ```
@@ -406,8 +407,8 @@ curl -X PUT https://api.guayaba.run/api/v1/grafts/my-graft/assets/icon \
 
 The CLI and UI both upload assets first, envelope last:
 
-1. `PUT  /grafts/{slug}/assets/icon`   (optional)
-2. `PUT  /grafts/{slug}/assets/cover`  (optional)
+1. `POST /grafts/{slug}/assets/icon`   (optional)
+2. `POST /grafts/{slug}/assets/cover`  (optional)
 3. `POST /grafts`
 
 If any asset upload returns `422`, the envelope `POST` is skipped — this

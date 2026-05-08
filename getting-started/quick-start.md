@@ -6,6 +6,8 @@ Get a working AI agent up and running in under 5 minutes.
 
 Go to [app.guayaba.run](https://app.guayaba.run) and sign up. Your account is automatically enrolled on the **Hobby** plan — no credit card required. You'll receive 2,000 welcome credits to get started.
 
+Hobby includes 1 hour of combined agent running time per UTC day. You can see your remaining daily runtime in the dashboard.
+
 ## 2. Create your first agent
 
 From the dashboard, click **New Agent**. You'll go through a short wizard:
@@ -51,5 +53,6 @@ Your Telegram users can now chat with the agent directly.
 ## What's next?
 
 - **[Core Concepts](concepts.md)** — Understand agents, sessions, GRAFTs, and credits.
+- **[Observability](observability.md)** — Track runtime, resource metrics, and LLM usage.
 - **[API Reference](../api-reference/introduction.md)** — Automate everything programmatically.
 - **[Authoring GRAFTs](../guides/authoring-grafts.md)** — Package and publish your agent as a reusable template.

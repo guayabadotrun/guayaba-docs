@@ -17,7 +17,7 @@ API operations that consume resources are billed in **credits**. Credits are che
 
 > Credit costs are provisional and subject to change.
 
-**Chat billing note**: The base credit (1) is charged on successful completion. The LLM cost (model-dependent token usage) is charged separately by the runtime, same as when using the web UI.
+**Chat billing note**: The base credit (1) is charged on successful completion. The LLM cost (model-dependent token usage) is recorded by the runtime and charged asynchronously after provider cost data is ready, same as when using the web UI.
 
 ## Checking Your Balance
 
@@ -82,13 +82,13 @@ The operation is **not** executed. No credits are deducted.
 
 ## Subscription Plans
 
-| Plan | Price | Running time | Agents | Monthly credits |
+| Plan | Price | Running time | Agents | Credit allowance |
 |---|---|---|---|---|
 | **Hobby** | Free | 1 hour/day | 1 | 2,000 (welcome grant) |
-| **Early Access** | $4.90/mo | Unlimited | 1 | 3,000 |
-| **Pro** | $49.00/mo | Unlimited | 3 | 10,000 |
+| **Early Access** | $4.90/mo | Unlimited | 1 | 3,000/month |
+| **Pro** | $49.00/mo | Unlimited | 3 | 10,000/month |
 
-Every new account is automatically enrolled on the **Hobby** plan and receives 2,000 welcome credits immediately — no credit card required. You can upgrade at any time from the billing dashboard.
+Every new account is automatically enrolled on the **Hobby** plan and receives 2,000 one-time welcome credits immediately — no credit card required. Paid plans include recurring subscription credits. You can upgrade at any time from the billing dashboard.
 
 ### Daily running-time limit (Hobby)
 
@@ -97,12 +97,12 @@ Hobby accounts may run agents for a combined total of **1 hour per UTC day** acr
 ```
 403 Forbidden
 {
-  "error": "Forbidden",
+  "success": false,
   "message": "Your Hobby plan includes 60 minutes of agent running time per day. You have used your full allowance for today. Your limit resets at midnight UTC."
 }
 ```
 
-The counter resets at **midnight UTC** every day.
+The counter resets at **midnight UTC** every day. Public API v1 does not currently expose a daily-runtime read endpoint; use the dashboard to see remaining Hobby time.
 
 ## Subscription Requirement
 

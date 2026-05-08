@@ -1,6 +1,6 @@
 # Errors
 
-All error responses follow a consistent format:
+Most public API error responses follow this format:
 
 ```json
 {
@@ -8,6 +8,8 @@ All error responses follow a consistent format:
   "message": "Human-readable explanation"
 }
 ```
+
+Subscription-tier guard errors, such as the Hobby daily runtime limit, return `{ "success": false, "message": "..." }` instead.
 
 ## Status Codes
 
@@ -19,7 +21,6 @@ All error responses follow a consistent format:
 | `404` | Not Found | Agent or resource does not exist |
 | `409` | Conflict | Agent is not in the required state (e.g., chatting with a stopped agent) |
 | `422` | Validation Error | Request body failed validation |
-| `429` | Too Many Requests | Rate limit exceeded |
 | `502` | Bad Gateway | Agent container returned an error or is unreachable |
 | `503` | Service Unavailable | Agent container is not running |
 
@@ -81,6 +82,17 @@ All error responses follow a consistent format:
 }
 ```
 
+### 403 — Subscription-Tier Guard
+
+This can happen when `POST /agents/{id}/start` would exceed your plan's running-agent cap or daily runtime budget.
+
+```json
+{
+  "success": false,
+  "message": "Your Hobby plan includes 60 minutes of agent running time per day. You have used your full allowance for today. Your limit resets at midnight UTC."
+}
+```
+
 ### 404 — Agent Not Found
 
 ```json
@@ -119,6 +131,7 @@ All error responses follow a consistent format:
 | `403` "active subscription required" | Subscription expired or canceled | Reactivate your subscription |
 | `403` "lacks the required scope" | Agent key missing the needed scope | Create a new agent key with the correct scopes |
 | `403` "master API key required" | Using an agent key on a master-only endpoint | Use your master key for CRUD and billing operations |
+| `403` "full allowance for today" | Hobby daily runtime limit reached | Wait until midnight UTC or upgrade from Hobby |
 | `402` on create/start | Low credit balance | Check balance with `GET /billing/credits` and top up |
 | `409` on chat/reload | Agent is not running | Start the agent first with `POST /agents/{id}/start` |
 | `502` on chat | Agent container crashed or is unresponsive | Check agent health with `GET /agents/{id}/health` |

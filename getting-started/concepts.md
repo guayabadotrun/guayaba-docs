@@ -16,7 +16,9 @@ An agent is the central unit. It has:
 
 Agents run in isolated containers and can be started, stopped, paused, and reloaded independently.
 
-The dashboard includes a **Resources** tab on each agent and an **Observability** section for account-wide monitoring. In production, infrastructure graphs come from AWS Container Insights. In local or non-AWS environments, infrastructure graphs may be unavailable, but LLM usage is still shown from Guayaba's internal usage snapshots.
+The dashboard includes a **Resources** tab on each agent and an **Observability** section for account-wide monitoring. In production, infrastructure graphs come from AWS Container Insights. In local or non-AWS environments, infrastructure graphs may be unavailable, but LLM usage can still be shown from runtime usage events.
+
+The Hobby plan includes 1 hour of combined agent running time per UTC day. Runtime limits use an effective counter: closed sessions that have already been saved plus live running time from agents that are currently active.
 
 ### Agent status
 
@@ -70,7 +72,7 @@ Credits are the billing unit for resource-intensive operations. They are checked
 | Stop / Pause / Delete | Free |
 | All read operations | Free |
 
-Credits come from your subscription allowance (renewed each billing period) plus any top-up purchases. New accounts receive a one-time welcome grant of **2,000 credits** on the Hobby plan. Check your balance at any time from **Settings → Billing** or via `GET /api/v1/billing/credits`.
+Credits come from your paid subscription allowance (renewed each billing period) plus any top-up purchases. New accounts receive a one-time welcome grant of **2,000 credits** on the Hobby plan. LLM usage credits are charged asynchronously after provider cost data is ready, so a very recent chat can appear in token charts before its cost is reflected in your balance. Check your balance at any time from **Settings → Billing** or via `GET /api/v1/billing/credits`.
 
 ---
 

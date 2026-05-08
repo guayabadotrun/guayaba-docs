@@ -61,7 +61,7 @@ All endpoints require the key owner to have an **active subscription** (status: 
 }
 ```
 
-> **Exception — GRAFT authoring endpoints.** `POST /api/v1/grafts/validate`, `POST /api/v1/grafts`, and `PUT /api/v1/grafts/{slug}/assets/{type}` only require a valid **master API key** (`RequireMasterApiKey`). They do not enforce `RequireActiveSubscription`, so authors can validate and push GRAFT bundles without an active subscription.
+> **Exception — GRAFT authoring endpoints.** `POST /api/v1/grafts/validate`, `POST /api/v1/grafts`, and `POST` or `PUT /api/v1/grafts/{slug}/assets/{type}` only require a valid **master API key** (`RequireMasterApiKey`). They do not enforce `RequireActiveSubscription`, so authors can validate and push GRAFT bundles without an active subscription.
 
 ## Key Revocation
 
