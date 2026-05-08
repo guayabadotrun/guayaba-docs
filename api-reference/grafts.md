@@ -158,7 +158,7 @@ API-consumer summary of the schema keys:
 |---|---|---|
 | `schema_version` | integer | Always `2`. v1 was removed before any client shipped. |
 | `framework_constraints` | string[] | Framework slugs this GRAFT is compatible with. |
-| `defaults` | object | Agent definition the resolver merges in. Same snake_case keys as the agent definition (`personality`, `vibe`, `knowledge_seed`, `channels`, `settings.model`, `settings.thinking`, `settings.extra_instructions`, `settings.secrets.*`, …). String leaves may contain `{{field_id}}` placeholders. |
+| `defaults` | object | Agent definition the resolver merges in. Same snake_case keys as the agent definition (`personality`, `vibe`, `knowledge_seed`, `channels`, `llm_provider_model`, `settings.thinking`, `settings.extra_instructions`, `settings.secrets.*`, …). String leaves may contain `{{field_id}}` placeholders. |
 | `fields[]` | array | User-facing inputs the GRAFT introduces on top of what the wizard already renders. See below. |
 | `steps[]` | array | Optional extra wizard steps the GRAFT contributes. Most GRAFTs leave this empty. |
 
@@ -248,7 +248,7 @@ Notes:
   submitted directly at their `binding` path under `settings.*`; the
   resolver checks `graft_overrides` first, then falls back.
 - Fields the GRAFT declares in `defaults` (e.g. `personality`, `channels`,
-  `settings.model`) are filled in only when the request omits them.
+  `llm_provider_model`) are filled in only when the request omits them.
 - The backend re-validates every `field.validation.backend` rule before
   accepting the request — invalid values return `422` with field-level
   error messages.

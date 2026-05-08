@@ -124,7 +124,7 @@ Allowed keys mirror the universal agent fields:
 | `vibe` | string (≤ 2 000 chars on openclaw) |
 | `knowledge_seed` | string[] (≤ 100 entries, each ≤ 5 000 chars on openclaw) |
 | `channels` | string[] (today only `["telegram"]` is whitelisted) |
-| `settings.model` | string (e.g. `"anthropic/claude-sonnet-4.6"`) |
+| `llm_provider_model` | string (e.g. `"anthropic/claude-sonnet-4.6"`) |
 | `settings.thinking` | string (`"off"`, `"low"`, `"medium"`, `"high"`) |
 | `settings.extra_instructions` | string (≤ 10 000 chars on openclaw) |
 | `settings.secrets.*` | object — usually filled via `{{token}}` from a `secret` field |
