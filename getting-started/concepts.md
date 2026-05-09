@@ -60,7 +60,7 @@ GRAFTs live in the marketplace. You can browse them in the dashboard or access t
 
 ## Credits
 
-Credits are the billing unit for resource-intensive operations. They are checked before execution — if your balance is insufficient, the request is rejected with `402`.
+Credits are the billing unit for resource-intensive operations. Base operation credits are checked before execution; if your balance is insufficient, the request is rejected with `402`. Model-dependent LLM usage can be billed later after runtime usage data is processed.
 
 | Operation | Cost |
 |---|---|

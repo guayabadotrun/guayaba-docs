@@ -35,7 +35,7 @@ In local development or environments where telemetry is not configured, infrastr
 Usage data comes from runtime model-call events:
 
 - **Tokens** are reported by the agent runtime after each model call, so they can appear quickly.
-- **Spend** is shown only after provider cost enrichment is complete. For managed OpenRouter calls, Guayaba enriches the runtime event asynchronously from OpenRouter generation data.
+- **Spend** is shown only after provider cost enrichment is complete. For managed provider calls (OpenRouter today), Guayaba enriches the runtime event asynchronously from provider generation data.
 - **Credits** are shown only after the usage billing batch has run.
 
 This distinction is intentional: recent tokens may be visible while spend or credits are still processing. The dashboard shows a small processing note in that case and uses empty values rather than showing pending cost as `$0`.

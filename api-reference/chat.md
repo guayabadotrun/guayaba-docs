@@ -7,7 +7,7 @@ POST /agents/{id}/chat
 ```
 
 **Auth**: Master key or agent key with `chat` scope.
-**Cost**: 1 credit per message (base) + LLM cost from the runtime.
+**Cost**: 1 base credit on a successful response, plus model-dependent LLM usage billed asynchronously from runtime usage events.
 
 ## Request
 

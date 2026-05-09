@@ -1,6 +1,6 @@
 # Billing & Credits
 
-API operations that consume resources are billed in **credits**. Credits are checked before executing the operation — if you don't have enough, the request is rejected with `402`.
+API operations that consume resources are billed in **credits**. Base operation credits are checked before execution; if your balance is insufficient, the request is rejected with `402`. Model-dependent LLM usage can be billed later after runtime usage data is processed.
 
 ## Credit Costs
 
