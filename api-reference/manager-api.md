@@ -93,9 +93,9 @@ Returns the detailed observability data shown in an agent's Resources tab.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `range` | `1h`, `6h`, `24h` | `24h` | Time range for metric series |
+| `range` | `1h`, `6h`, `24h`, `7d`, `30d` | `24h` | Time range for metric series |
 
-The response has the same `agent`, `infrastructure`, and `usage` concepts as `GET /observability/agents`, but includes time-series data under `infrastructure.metrics` and `usage.series`. Token series can include recent runtime events immediately. Spend and credit series use `null` points until cost enrichment and billing are ready, so pending usage is not displayed as zero spend.
+The response has the same `agent`, `infrastructure`, and `usage` concepts as `GET /observability/agents`, but includes time-series data under `infrastructure.metrics` and `usage.series`. Token and credit series are cumulative running totals over the selected range. Spend series use per-bucket ready provider spend. Pending spend or credit points use `null` until cost enrichment and billing are ready, so pending usage is not displayed as zero spend.
 
 ## Account Observability Summary
 
@@ -109,7 +109,7 @@ Returns account-level LLM usage series for the dashboard Observability page.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `range` | `1h`, `6h`, `24h` | `24h` | Time range for usage series |
+| `range` | `1h`, `6h`, `24h`, `7d`, `30d` | `24h` | Time range for usage series |
 
 ```json
 {
@@ -145,6 +145,8 @@ Returns account-level LLM usage series for the dashboard Observability page.
   }
 }
 ```
+
+Token and credit chart points are cumulative running totals. `model_series.models[].points` stay per-interval token counts by model for the Model Usage stacked bars, and `agent_activity.agents[].points` are cumulative call counts.
 
 ## OpenRouter Usage Proxy
 

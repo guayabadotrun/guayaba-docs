@@ -38,7 +38,14 @@ Usage data comes from runtime model-call events:
 - **Spend** is shown only after provider cost enrichment is complete. For managed provider calls (OpenRouter today), Guayaba enriches the runtime event asynchronously from provider generation data.
 - **Credits** are shown only after the usage billing batch has run.
 
+The summary charts use two different visual meanings:
+
+- **Total Tokens** and **Total Credits** are cumulative running totals for the selected range.
+- **Model Usage** is per-interval token activity by model, shown as stacked bars.
+
 This distinction is intentional: recent tokens may be visible while spend or credits are still processing. The dashboard shows a small processing note in that case and uses empty values rather than showing pending cost as `$0`.
+
+The dashboard range selector supports `1h`, `6h`, `24h`, `7d`, and `30d`.
 
 ## Data Freshness
 
