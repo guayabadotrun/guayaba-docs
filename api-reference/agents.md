@@ -2,7 +2,7 @@
 
 ## List Agents
 
-Returns all agents owned by the API key's user.
+Returns all agents available to the API key's backend account context.
 
 ```
 GET /agents
@@ -28,6 +28,7 @@ curl https://api.guayaba.run/api/v1/agents \
   "data": [
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
+      "tenant_id": "TENANT_UUID",
       "name": "My Agent",
       "status": "running",
       "channels": ["telegram"],
@@ -53,7 +54,7 @@ Returns full details for a specific agent.
 GET /agents/{id}
 ```
 
-**Auth**: Master key (any agent) or agent key with `agent:read` scope (own agent only).
+**Auth**: Master key (any agent in the key context) or agent key with `agent:read` scope (linked agent only).
 
 ```bash
 curl https://api.guayaba.run/api/v1/agents/550e8400-... \

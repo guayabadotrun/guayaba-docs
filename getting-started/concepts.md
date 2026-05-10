@@ -16,7 +16,7 @@ An agent is the central unit. It has:
 
 Agents run in isolated containers and can be started, stopped, paused, and reloaded independently.
 
-The dashboard includes a **Resources** tab on each agent and an **Observability** section for account-wide monitoring. In production, infrastructure graphs come from AWS Container Insights. In local or non-AWS environments, infrastructure graphs may be unavailable, but LLM usage can still be shown from runtime usage events.
+The dashboard includes a **Resources** tab on each agent and an **Observability** section for monitoring everything available to your account. In production, infrastructure graphs come from AWS Container Insights. In local or non-AWS environments, infrastructure graphs may be unavailable, but LLM usage can still be shown from runtime usage events.
 
 The Hobby plan includes 1 hour of combined agent running time per UTC day. Runtime limits use an effective counter: closed sessions that have already been saved plus live running time from agents that are currently active.
 
@@ -82,7 +82,7 @@ Guayaba has two key types:
 
 ### Master Key (`g_master_…`)
 
-One per user. Full access to every agent and every endpoint. Required for creating agents, managing billing, and creating agent keys. Revoking a master key cascades to all agent keys under your account.
+One active master key for your backend account context. It has full access to every available agent and endpoint in that context. Required for creating agents, managing billing, and creating agent keys. Revoking a master key cascades to all related agent keys.
 
 ### Agent Key (`g_agent_…`)
 

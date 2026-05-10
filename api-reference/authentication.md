@@ -12,8 +12,8 @@ Guayaba uses a two-tier key system:
 
 ### Master Key (`g_master_`)
 
-- **One per user.** Creating a new one revokes the previous master key and all its agent keys.
-- Full access to every endpoint and every agent you own.
+- **One active key per backend account context.** Creating a new one revokes the previous master key and all its agent keys in that context.
+- Full access to every endpoint and every agent available to that context.
 - Required for: creating/updating/deleting agents, billing endpoints, and managing API keys.
 - Format: `g_master_` + 48 hex characters (57 chars total).
 
@@ -51,7 +51,7 @@ Scopes control what an agent key can do. Master keys bypass all scope checks.
 
 ## Subscription Requirement
 
-All endpoints require the key owner to have an **active subscription** (status: `active` or `trialing`). New accounts are automatically enrolled on the free **Hobby** plan at registration, so this requirement is met from day one — no additional setup needed. If the subscription is inactive, every request returns:
+All endpoints require the key's backend account context to have an **active subscription** (status: `active` or `trialing`). New accounts are automatically enrolled on the free **Hobby** plan at registration, so this requirement is met from day one — no additional setup needed. If the subscription is inactive, every request returns:
 
 ```
 403 Forbidden
@@ -65,7 +65,7 @@ All endpoints require the key owner to have an **active subscription** (status: 
 
 ## Key Revocation
 
-- **Revoking a master key cascades** — all agent keys under that user are also revoked.
+- **Revoking a master key cascades** — all agent keys under the same backend account context are also revoked.
 - Regenerating a key revokes the old one and creates a new one.
 - Revoked keys return `401 Unauthorized` immediately.
 

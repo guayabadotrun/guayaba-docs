@@ -47,6 +47,7 @@ curl "https://api.guayaba.run/api/v1/grafts?framework=openclaw&category=support&
   "data": [
     {
       "id": "b5a51000-0000-4000-8000-000000000002",
+      "owner_tenant_id": null,
       "slug": "customer-support-pro",
       "name": "Customer Support Pro",
       "short_description": "Friendly support agent ready for chat and Telegram.",
@@ -260,10 +261,13 @@ Notes:
 
 These three endpoints power the manager UI's "Export GRAFT" modal and the
 [`@guayaba/graft-cli`](https://www.npmjs.com/package/@guayaba/graft-cli)
-toolkit (`graft validate`, `graft push`). They write into your
-account's **personal storage area** — personal grafts are private to your
-account and are not published in the marketplace until you submit them for
-review.
+toolkit (`graft validate`, `graft push`). They write into your private
+personal storage area. Personal grafts are not published in the marketplace
+until you submit them for review.
+
+`owner_tenant_id` and storage keys containing `TENANT_ID` are opaque backend
+metadata. You do not need to configure or send any tenant header when using
+these endpoints; the backend derives the owner from your master API key.
 
 All three require a **master** API key. Agent-scoped keys are rejected with `403`.
 Generate a master key from the manager UI: *Account → API Keys → New master key*.
@@ -321,8 +325,9 @@ the `graft.tar.gz` bundle produced by `@guayaba/graft-cli`. The bundle must
 contain `metadata.json`, `schema.json`, and one `skills/<name>.tar.gz` per
 installed skill. The pair `(slug, version)` is **immutable** — re-pushing
 the same pair returns `409` with an error on `metadata.version`. Bump the
-version field to push again. Slugs are owned per-author: a different user
-pushing your slug gets a `409` on `metadata.slug`.
+version field to push again. Slugs are owned by your private authoring
+space: a different owner context pushing your slug gets a `409` on
+`metadata.slug`.
 
 **Wire format**: `multipart/form-data` with three fields.
 
@@ -349,7 +354,7 @@ curl -X POST https://api.guayaba.run/api/v1/grafts \
     "slug":          "my-graft",
     "version":       "0.1.0",
     "version_id":    "VERSION_UUID",
-    "bundle_s3_key": "personal/USER_ID/my-graft/0.1.0/graft.tar.gz",
+    "bundle_s3_key": "personal/TENANT_ID/my-graft/0.1.0/graft.tar.gz",
     "is_personal":   true
   }
 }
@@ -376,7 +381,7 @@ for REST clients, but the CLI and manager UI use plain `POST`.
 | `cover` | `image/png`, `image/jpeg`, `image/webp`         | 4 MB     |
 
 Assets are stored **unversioned** at
-`personal/{user_id}/{slug}/{type}.{ext}` — re-uploading replaces the
+`personal/{tenant_id}/{slug}/{type}.{ext}` — re-uploading replaces the
 previous file in place and sweeps any stale extensions for that type
 (so switching from `.png` to `.webp` won't leave both behind).
 
@@ -393,7 +398,7 @@ curl -X POST https://api.guayaba.run/api/v1/grafts/my-graft/assets/icon \
   "data": {
     "slug": "my-graft",
     "type": "icon",
-    "path": "personal/USER_ID/my-graft/icon.png"
+    "path": "personal/TENANT_ID/my-graft/icon.png"
   }
 }
 ```

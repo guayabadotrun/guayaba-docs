@@ -16,7 +16,7 @@ This API is authenticated with your dashboard session, not with `g_master_*` or 
 GET /observability/agents
 ```
 
-Returns a paginated list of your agents with latest observability summaries.
+Returns a paginated list of agents in your current backend account context with latest observability summaries.
 
 **Query parameters**:
 
@@ -42,6 +42,7 @@ Returns a paginated list of your agents with latest observability summaries.
     {
       "agent": {
         "id": "550e8400-e29b-41d4-a716-446655440000",
+        "tenant_id": "TENANT_UUID",
         "name": "Support Agent",
         "status": "running",
         "model": "openrouter/anthropic/claude-sonnet-4.6",
@@ -97,13 +98,13 @@ Returns the detailed observability data shown in an agent's Resources tab.
 
 The response has the same `agent`, `infrastructure`, and `usage` concepts as `GET /observability/agents`, but includes time-series data under `infrastructure.metrics` and `usage.series`. Token and credit series are cumulative running totals over the selected range. Spend series use per-bucket ready provider spend. Pending spend or credit points use `null` until cost enrichment and billing are ready, so pending usage is not displayed as zero spend.
 
-## Account Observability Summary
+## Dashboard Observability Summary
 
 ```
 GET /observability/summary
 ```
 
-Returns account-level LLM usage series for the dashboard Observability page.
+Returns current-context LLM usage series for the dashboard Observability page.
 
 **Query parameters**:
 
@@ -115,6 +116,7 @@ Returns account-level LLM usage series for the dashboard Observability page.
 {
   "success": true,
   "data": {
+    "tenant_id": "TENANT_UUID",
     "usage": {
       "source": "llm_usage_events",
       "available": true,
@@ -159,7 +161,7 @@ Returns OpenRouter key usage for the agent without exposing the agent's OpenRout
 Possible responses:
 
 - `200`: OpenRouter usage data.
-- `403`: the agent does not belong to the authenticated user.
+- `403`: the agent is not available to the authenticated dashboard session.
 - `404`: the agent does not exist or has no OpenRouter key.
 - `502`: OpenRouter usage could not be retrieved.
 
@@ -169,7 +171,7 @@ Possible responses:
 GET /subscription/daily-runtime
 ```
 
-Returns today's runtime budget usage for the authenticated user's current tier.
+Returns today's runtime budget usage for the authenticated dashboard session's current tier.
 
 ```json
 {
