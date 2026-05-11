@@ -120,7 +120,7 @@ Tool calls are auto-approved — no user confirmation is needed when using the A
 | `402` | Insufficient credits |
 | `403` | Key lacks `chat` scope or cannot access this agent |
 | `404` | Agent not found |
-| `409` | Agent is not running |
+| `409` | Agent is not running yet, including while it is `starting` |
 | `422` | Validation error (missing `message`, too long, etc.) |
 | `502` | Agent container unreachable |
 

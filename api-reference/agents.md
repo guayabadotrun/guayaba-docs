@@ -129,7 +129,7 @@ curl -X PUT https://api.guayaba.run/api/v1/agents/550e8400-... \
 
 ## Delete Agent
 
-Deletes an agent. Stops it first if running. Cascades to API keys and sessions.
+Deletes an agent. Stops it first if starting, running, or paused. Cascades to API keys and sessions.
 
 ```
 DELETE /agents/{id}
@@ -268,9 +268,9 @@ curl "https://api.guayaba.run/api/v1/agents/550e8400-.../logs?level=warn,error&l
 | Status | Description |
 |---|---|
 | `created` | Agent created but never started |
-| `active` | Provisioning / booting |
+| `starting` | Provisioning / booting |
 | `running` | Running and accepting requests |
-| `paused` | Paused (container alive, not processing) |
+| `paused` | Paused (container alive, gateway not processing messages) |
 | `stopped` | Stopped (no container) |
 | `failed` | Failed to start or crashed |
 

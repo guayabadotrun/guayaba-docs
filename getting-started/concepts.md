@@ -18,14 +18,14 @@ Agents run in isolated containers and can be started, stopped, paused, and reloa
 
 The dashboard includes a **Resources** tab on each agent and an **Observability** section for monitoring everything available to your account. In production, infrastructure graphs come from AWS Container Insights. In local or non-AWS environments, infrastructure graphs may be unavailable, but LLM usage can still be shown from runtime usage events.
 
-The Hobby plan includes 1 hour of combined agent running time per UTC day. Runtime limits use an effective counter: closed sessions that have already been saved plus live running time from agents that are currently active.
+The Hobby plan includes 1 hour of combined agent running time per UTC day. Runtime limits use an effective counter: closed sessions that have already been saved plus live time from agents that are currently starting or running.
 
 ### Agent status
 
 | Status | Meaning |
 |---|---|
 | `created` | Exists but has never been started |
-| `active` | Provisioning or booting |
+| `starting` | Provisioning or booting |
 | `running` | Live and accepting messages |
 | `paused` | Container alive, not processing messages |
 | `stopped` | Container shut down |

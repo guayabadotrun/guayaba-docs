@@ -190,6 +190,6 @@ Field meanings:
 - `seconds_used`: effective total for the current UTC day.
 - `limit_seconds`: daily tier limit, or `null` for unlimited tiers.
 - `persisted_seconds_used`: closed-session seconds already saved today.
-- `live_seconds_used`: live running-session seconds calculated at read time.
+- `live_seconds_used`: live `starting`/`running` session seconds calculated at read time.
 
 The live portion is calculated on demand rather than written every minute, which avoids double-counting when agents stop, fail, or are stopped by quota enforcement.

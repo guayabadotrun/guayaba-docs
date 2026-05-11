@@ -22,7 +22,7 @@ From the dashboard, click **New Agent**. You'll go through a short wizard:
 
 ## 3. Start the agent
 
-On the agent detail page, click **Start**. It takes a moment to provision. The status moves from `created` → `active` → `running`.
+On the agent detail page, click **Start**. It takes a moment to provision. The status moves from `created` → `starting` → `running`.
 
 **Cost**: 5 credits.
 

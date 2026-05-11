@@ -14,13 +14,13 @@ Agent uptime has two related values:
 - **Persisted uptime**: completed running time that has already been saved after an agent stops or fails.
 - **Effective uptime**: persisted uptime plus the current live session for agents that are running or starting.
 
-The dashboard uses effective values so running agents do not appear stuck at `0` or an old value while they are still active.
+The dashboard uses effective values so running or starting agents do not appear stuck at `0` or an old value while they are still live.
 
 ## Hobby Daily Runtime
 
 The Hobby plan includes a daily running-time limit. The limit is counted across your running agents and resets at midnight UTC.
 
-The daily counter is also effective: it combines already-saved closed sessions with live running time. When the daily limit is reached, Guayaba stops running agents and prevents new starts until the next UTC day.
+The daily counter is also effective: it combines already-saved closed sessions with live starting/running time. When the daily limit is reached, Guayaba stops starting or running agents and prevents new starts until the next UTC day.
 
 See [Billing & Credits](../api-reference/billing.md) for plan limits and billing behavior.
 

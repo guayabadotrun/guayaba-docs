@@ -92,7 +92,7 @@ Every new account is automatically enrolled on the **Hobby** plan and receives 2
 
 ### Daily running-time limit (Hobby)
 
-Hobby accounts may run agents for a combined total of **1 hour per UTC day** across all agents in the current backend account context. When the limit is reached, running agents are automatically stopped and the agent start endpoint returns:
+Hobby accounts may run agents for a combined total of **1 hour per UTC day** across all agents in the current backend account context. Live usage includes agents that are `starting` or `running`. When the limit is reached, running or starting agents are automatically stopped and the agent start endpoint returns:
 
 ```
 403 Forbidden

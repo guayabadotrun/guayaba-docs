@@ -611,7 +611,7 @@ runs the apply sequence **once**, in this order:
 
 The apply sequence is **transparent to the user** — it happens in the
 background while the agent container starts. The user sees the agent
-status flip from *pending* to *running* when the sequence completes.
+status move from `starting` to `running` when the sequence completes.
 
 ---
 
