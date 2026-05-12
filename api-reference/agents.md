@@ -146,7 +146,7 @@ curl -X DELETE https://api.guayaba.run/api/v1/agents/550e8400-... \
 
 ## Runtime Control
 
-All runtime endpoints require `agent:manage` scope (master keys always pass).
+All runtime endpoints require `agent:manage` scope (master keys always pass). Runtime actions also depend on the selected framework's capabilities. OpenClaw currently supports start, stop, pause, reload, logs, sessions, files, uploads, and GRAFT export.
 
 ### Get Status
 
@@ -211,7 +211,7 @@ Pauses without stopping the container. **Free.**
 POST /agents/{id}/reload
 ```
 
-Hot-reloads configuration without restarting. Agent must be running. **Cost**: 1 credit.
+Hot-reloads configuration without restarting. Agent must be running and its framework must support config reload. **Cost**: 1 credit.
 
 ### Get Logs
 
@@ -219,7 +219,7 @@ Hot-reloads configuration without restarting. Agent must be running. **Cost**: 1
 GET /agents/{id}/logs
 ```
 
-Returns the agent's runtime log buffer. **Free.**
+Returns the agent's runtime log buffer when the framework supports logs. **Free.**
 
 **Query parameters**:
 
@@ -408,7 +408,7 @@ POST /agents/{id}/channels/telegram/pairing/reject
 
 ## Files
 
-All file endpoints require `files` scope. The agent must be running.
+All file endpoints require `files` scope. The agent must be running and its framework must support workspace files/uploads.
 
 ### Upload a File
 

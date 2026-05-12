@@ -9,6 +9,8 @@ POST /agents/{id}/chat
 **Auth**: Master key or agent key with `chat` scope.
 **Cost**: 1 base credit on a successful response, plus model-dependent LLM usage billed asynchronously from runtime usage events.
 
+Chat also requires the agent to be `running` and the selected framework to support the chat capability. OpenClaw is the current framework and backs this endpoint with its OpenAI-compatible runtime gateway.
+
 ## Request
 
 ```json
@@ -120,7 +122,7 @@ Tool calls are auto-approved — no user confirmation is needed when using the A
 | `402` | Insufficient credits |
 | `403` | Key lacks `chat` scope or cannot access this agent |
 | `404` | Agent not found |
-| `409` | Agent is not running yet, including while it is `starting` |
+| `409` | Agent is not running yet, including while it is `starting`, or the framework does not support chat |
 | `422` | Validation error (missing `message`, too long, etc.) |
 | `502` | Agent container unreachable |
 

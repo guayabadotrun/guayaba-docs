@@ -11,7 +11,7 @@ An agent is the central unit. It has:
 - **Identity** — a name, personality, and vibe (tone/style).
 - **Knowledge** — a set of seed entries the agent always has in context.
 - **Model** — the LLM provider, model name, and thinking level.
-- **Channels** — communication surfaces (currently Telegram and web chat).
+- **Channels** — external communication surfaces such as Telegram. Web chat is built into the runtime and is not a GRAFT channel.
 - **Tools / Skills** — capabilities like web search, code execution, or custom API calls.
 
 Agents run in isolated containers and can be started, stopped, paused, and reloaded independently.
@@ -104,9 +104,9 @@ Use agent keys to give third-party systems or automations the minimum access the
 
 ## Frameworks
 
-A framework is the runtime environment that hosts your agent. It defines what tools are available, what model parameters are accepted, and what channels can be connected.
+A framework is the runtime environment that hosts your agent. It defines what tools are available, what model parameters are accepted, which external channels can be connected, and which runtime capabilities are supported, such as chat, sessions, files, logs, reload, and GRAFT export.
 
-Currently, **OpenClaw** is the only available framework. It supports Telegram and web chat, and provides a built-in set of tools (web search, code execution, file access, and more).
+Currently, **OpenClaw** is the only available framework. It supports Telegram, web chat, sessions, workspace files, logs, config reload, and a built-in set of tools (web search, code execution, file access, and more).
 
 ---
 
