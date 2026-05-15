@@ -1,10 +1,23 @@
 # AGENTS.md — guayaba-docs
 
-## What this is
+## Quick Reference
 
-The **user-facing public documentation** for the Guayaba platform, structured for GitBook sync. This is the canonical source for end-user docs — API reference, getting started guides, and GRAFT authoring. It is NOT the internal team documentation (that lives in `gene-seed/internal/`).
+**What this is:** User-facing public documentation for the Guayaba platform, structured for GitBook sync.
 
-## Repo structure
+**Critical rules:**
+- **English only.** Every word in this repo must be in English.
+- **Keep internal docs out.** Architecture decisions, contracts, and debt go in `gene-seed/internal/`, not here.
+- **Schema examples must be valid.** The canonical GRAFT channel is `["telegram"]` — never include `"chat"` in `defaults.channels[]`.
+- **Keep in sync with `convolution-api`.** The source of truth for API contracts is `gene-seed/internal/contracts/` and the backend source.
+- **Update `SUMMARY.md` when adding pages.** GitBook uses it as its table of contents.
+
+> Platform map: `gene-seed/AGENTS.md`
+
+---
+
+## Full Reference
+
+### Repo structure
 
 | Path | Contents |
 |---|---|
@@ -19,23 +32,17 @@ The **user-facing public documentation** for the Guayaba platform, structured fo
 | `api-reference/grafts.md` | Marketplace API + authoring (validate, push, assets) |
 | `api-reference/billing.md` | Credits, costs, subscription |
 | `api-reference/errors.md` | All HTTP error codes with examples |
+| `api-reference/manager-api.md` | Dashboard API (Sanctum-authenticated observability endpoints) |
 | `guides/authoring-grafts.md` | Full schema v2 reference: fields, types, placement, validation |
+| `guides/workflow-agent-piece.md` | Using the Guayaba workflow piece to control agents from a workflow |
 
-## How to contribute
+### How to contribute
 
 1. **Edit existing content** — edit the file directly and commit to `master`.
-2. **Add a new page** — create the `.md` file, then add it to `SUMMARY.md` in the right position (GitBook uses SUMMARY.md as its TOC).
+2. **Add a new page** — create the `.md` file, then add it to `SUMMARY.md` in the right position.
 3. **Keep internal docs out** — architecture decisions, inter-service contracts, and technical debt go in `gene-seed/internal/`, not here.
 
-## Key rules
-
-- **English only.** Every word in this repo must be in English.
-- **User-facing tone.** Write for developers using the API, not for platform maintainers. Avoid internal project names or ECS/VPC implementation details.
-- **Schema examples must be valid.** The canonical GRAFT channel is `["telegram"]` — never include `"chat"` in `defaults.channels[]`. Field ids use `snake_case` (e.g. `"id": "company_name"`, not `"key": ...`).
-- **Keep in sync with convolution-api.** The source of truth for API contracts is `gene-seed/internal/contracts/inter-service-api.md` and the convolution-api source. When the backend changes, update docs here.
-- **Do not duplicate gene-seed/internal/.** If something is only relevant to maintainers/agents, it belongs in gene-seed.
-
-## Source of truth for API contracts
+### Source of truth for API contracts
 
 `gene-seed/internal/contracts/inter-service-api.md` — verified against source code.
 Public API OpenAPI spec: `convolution-api/docs/features/openapi-v1.yaml`.

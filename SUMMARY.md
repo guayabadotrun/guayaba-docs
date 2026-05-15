@@ -21,3 +21,4 @@
 ## Guides
 
 - [Authoring GRAFTs](guides/authoring-grafts.md)
+- [Guayaba AI Agent — Workflow node](guides/workflow-agent-piece.md)
