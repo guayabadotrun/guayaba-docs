@@ -126,6 +126,11 @@ The list and detail endpoints return identical shapes — the list endpoint
 already includes the full `schema`, so most clients don't need to call the
 detail endpoint at all.
 
+> `GET /grafts` is currently **unpaginated** — it returns every published
+> GRAFT in a single response. If/when the catalog grows large enough to
+> need pagination this will switch to a Laravel paginator envelope; new
+> consumers should treat any keys outside `data[]` as advisory until then.
+
 ---
 
 ## Show GRAFT
@@ -405,8 +410,8 @@ curl -X POST https://api.guayaba.run/api/v1/grafts/my-graft/assets/icon \
 
 **Errors**:
 
-- `422` — file rejected (wrong MIME type, exceeds size limit, slug invalid).
-- `404` — slug parameter is malformed (must be kebab-case).
+- `422` — file rejected (wrong MIME type, exceeds size limit, or slug failed kebab-case validation).
+- `404` — unknown asset `type` (only `icon` and `cover` are accepted).
 
 ### Recommended ordering
 

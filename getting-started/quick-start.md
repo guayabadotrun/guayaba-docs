@@ -4,7 +4,7 @@ Get a working AI agent up and running in under 5 minutes.
 
 ## 1. Create an account
 
-Go to [app.guayaba.run](https://app.guayaba.run) and sign up. Your account is automatically enrolled on the **Hobby** plan — no credit card required. You'll receive 2,000 welcome credits to get started.
+Go to [app.guayaba.run](https://app.guayaba.run) and sign up. Your account is automatically enrolled on the **Hobby** plan — no credit card required. The Hobby plan includes 2,000 credits per month — you'll have those available immediately on signup.
 
 Hobby includes 1 hour of combined agent running time per UTC day. You can see your remaining daily runtime in the dashboard.
 
@@ -28,7 +28,7 @@ On the agent detail page, click **Start**. It takes a moment to provision. The s
 
 ## 4. Chat with your agent
 
-Once the agent is `running`, open the **Chat** tab. Type a message and press Enter.
+Once the agent is `running`, click the **Chat** icon in the **Channels** panel on the agent detail page. Type a message and press Enter.
 
 You can also chat programmatically using the API:
 
@@ -45,8 +45,8 @@ curl -X POST https://api.guayaba.run/api/v1/agents/{id}/chat \
 If you enabled the Telegram channel during setup:
 
 1. Open a Telegram chat with your bot.
-2. Send `/start` — the bot will reply with a pairing code.
-3. Go to the agent's **Channels** tab in the dashboard and approve the pairing code.
+2. Send any message (Telegram clients usually send `/start` automatically) — the bot will reply with a pairing code.
+3. On the agent detail page, locate the **Channels** panel (top-right of the header). Open the Telegram channel and approve the pairing code shown there.
 
 Your Telegram users can now chat with the agent directly.
 

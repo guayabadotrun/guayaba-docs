@@ -24,7 +24,7 @@ Chat also requires the agent to be `running` and the selected framework to suppo
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `message` | string | Yes | The user message (max 32,000 chars) |
-| `sessionKey` | string | No | Reuse an existing session. Must start with `api:`. Auto-generated if omitted. |
+| `sessionKey` | string | No | Reuse an existing session. Must match `api:[a-zA-Z0-9-]+`, max 255 chars. Auto-generated if omitted. |
 | `stream` | boolean | No | `true` for SSE streaming, `false` (default) for sync JSON |
 
 ## Sync Response
@@ -54,7 +54,13 @@ curl -X POST https://api.guayaba.run/api/v1/agents/550e8400-.../chat \
 
 ## Streaming Response (SSE)
 
-When `stream` is `true`, the response is a `text/event-stream` with incremental events.
+When `stream` is `true`, the response is a `text/event-stream`. The backend wraps the gateway's OpenAI-compatible chunk stream with two envelope events of its own:
+
+1. A first `session` event with the resolved `sessionKey`.
+2. The forwarded OpenAI `chat.completion.chunk` stream, terminated by `data: [DONE]`.
+3. A final `done` event with the same `sessionKey`.
+
+If the backend cannot reach the agent gateway, a single `error` event is emitted in place of the upstream stream.
 
 ```bash
 curl -X POST https://api.guayaba.run/api/v1/agents/550e8400-.../chat \
@@ -67,27 +73,24 @@ curl -X POST https://api.guayaba.run/api/v1/agents/550e8400-.../chat \
 ```
 data: {"type":"session","sessionKey":"api:550e8400-..."}
 
-data: {"type":"delta","text":"Quantum"}
+data: {"id":"chatcmpl-...","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"role":"assistant","content":"Quantum"}}]}
 
-data: {"type":"delta","text":"Quantum computing is"}
+data: {"id":"chatcmpl-...","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":" computing is"}}]}
 
-data: {"type":"tool","name":"search","phase":"start"}
-
-data: {"type":"tool","name":"search","phase":"result","result":"..."}
-
-data: {"type":"delta","text":"Quantum computing is a type of computation..."}
+data: [DONE]
 
 data: {"type":"done","sessionKey":"api:550e8400-..."}
 ```
 
 ### Event Types
 
-| Type | Description |
-|---|---|
-| `session` | First event. Contains the `sessionKey` for this conversation. |
-| `delta` | Incremental text from the assistant. The `text` field contains the accumulated content so far. |
-| `tool` | Tool call lifecycle. `phase: "start"` when a tool is invoked, `phase: "result"` with the output. |
-| `done` | Final event. The stream is complete. |
+| Type | Origin | Description |
+|---|---|---|
+| `session` | Guayaba backend | First event. Contains the resolved `sessionKey`. |
+| `chat.completion.chunk` | Forwarded from the gateway (standard OpenAI shape — has no `type` field) | Incremental assistant content under `choices[0].delta.content`. Tool calls appear inline under `choices[0].delta.tool_calls`. |
+| `[DONE]` | Forwarded from the gateway | Sentinel marking the end of the upstream stream. |
+| `done` | Guayaba backend | Final envelope with the `sessionKey`. |
+| `error` | Guayaba backend | Emitted only when the backend cannot connect to the agent gateway. Replaces the upstream stream. |
 
 ## Sessions
 
@@ -110,7 +113,7 @@ You can manage sessions (list, rename, archive, delete) through the [Sessions en
 
 ## Tool Calls
 
-Agents can use tools (web search, code execution, etc.) during a conversation. In streaming mode, tool calls appear as `tool` events with `phase: "start"` and `phase: "result"`. In sync mode, the final response includes the result after all tools have completed.
+Agents can use tools (web search, code execution, etc.) during a conversation. In streaming mode, tool calls appear inline as `delta.tool_calls` deltas inside the upstream `chat.completion.chunk` events — there is no separate `tool` envelope frame. In sync mode, the final response includes the result after all tools have completed.
 
 Tool calls are auto-approved — no user confirmation is needed when using the API.
 

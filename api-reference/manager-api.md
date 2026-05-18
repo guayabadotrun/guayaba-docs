@@ -1,6 +1,6 @@
 # Dashboard API
 
-Most public automation should use the [Public API v1](introduction.md). Some dashboard-only observability data is served by the session API used by the Guayaba web app.
+Most public automation should use the [Public API v1](introduction.md). This page documents the dashboard-only **observability** and **runtime budget** endpoints used by the Guayaba web app.
 
 ## Base URL
 
@@ -8,7 +8,7 @@ Most public automation should use the [Public API v1](introduction.md). Some das
 https://api.guayaba.run/api
 ```
 
-This API is authenticated with your dashboard session, not with `g_master_*` or `g_agent_*` API keys. Do not use Public API v1 keys against these endpoints. These routes are documented so dashboard behavior is explicit; they are not a stable automation surface.
+This API is authenticated with your dashboard session, not with `g_master_*` or `g_agent_*` API keys. Do not use Public API v1 keys against these endpoints. The scope here is **only the observability + runtime budget endpoints below** — these routes are documented so dashboard behavior is explicit and **are not a stable automation surface**. They may change without notice; treat the [Public API v1](introduction.md) as the contract for any third-party integration.
 
 ## Observability Agents
 
@@ -24,6 +24,7 @@ Returns a paginated list of agents in your current backend account context with 
 |---|---|---|---|
 | `page` | integer | 1 | Page number |
 | `per_page` | integer | 25 | Results per page |
+| `range` | `1h`, `6h`, `24h`, `7d`, `30d` | `24h` | Time range used to compute the per-row usage totals and pending counts |
 
 **Response fields**:
 

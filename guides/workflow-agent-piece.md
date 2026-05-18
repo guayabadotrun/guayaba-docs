@@ -16,14 +16,14 @@ Sends a chat message to a running agent and returns the agent's reply.
 |---|---|---|
 | Agent | Dropdown | The agent to message. The agent must be in **running** status — start it from the Agents dashboard before executing this workflow, or add a **Start Agent** step earlier in the workflow. |
 | Message | Text | The message to send. Supports `{{token}}` references to previous step outputs. |
-| Session Key (optional) | Text | An existing session key to continue a conversation. If omitted, a new session is created each run. |
+| Session Key (optional) | Text | An existing session key to continue a conversation. Must match the format `api:<identifier>` (alphanumeric and hyphens only, max 255 characters). If omitted, a new session is created each run. |
 
 **Output:**
 
 ```json
 {
   "sessionKey": "api:uuid",
-  "message": { "role": "assistant", "content": "The agent's reply." }
+  "content": "The agent's reply."
 }
 ```
 
@@ -39,7 +39,7 @@ Add a **Start Agent** step before **Send Message** to handle this automatically.
 
 ### Start Agent
 
-Starts a stopped or failed agent. The step **waits** for the agent to become ready before continuing — agent boot typically takes 3–5 minutes.
+Starts a stopped or failed agent. The step **waits** for the agent to become ready before continuing — typical boot times range from a couple of minutes (warm path) to several minutes for cold containers or first-boot GRAFT applies. The hard upper bound is 10 minutes (see below).
 
 **How it works:**
 
@@ -74,14 +74,44 @@ Stops a running agent. Safe to call if the agent is already stopped — the step
 **Output:**
 
 ```json
-{ "agentId": "uuid", "status": "stopped" }
+{
+  "agentId": "uuid",
+  "previousStatus": "running",
+  "status": "stopped"
+}
 ```
 
 ---
 
-### Get Agent / List Agents
+### Get Agent
 
-Read-only helpers for fetching agent metadata. Useful when you need agent details downstream in the workflow.
+Returns a single `{ id, name, status }` record for the selected agent. (Internally it calls the same agent-list endpoint and filters by id; it does NOT return personality, model, settings, or other agent definition fields.)
+
+**Inputs:**
+
+| Field | Type | Description |
+|---|---|---|
+| Agent | Dropdown | The agent to look up. |
+
+**Output:**
+
+```json
+{ "id": "uuid", "name": "My Agent", "status": "running" }
+```
+
+### List Agents
+
+Returns every agent visible to your account.
+
+**Output:**
+
+```json
+{
+  "agents": [
+    { "id": "uuid", "name": "My Agent", "status": "running" }
+  ]
+}
+```
 
 ---
 
@@ -104,6 +134,8 @@ Fires when a Guayaba agent transitions to **running** status (i.e. after a succe
   "started_at": "2026-05-15T10:00:00+00:00"
 }
 ```
+
+> The workflow editor's test/sample data adds an extra `status: "running"` field for convenience, but real **On Agent Start** webhook deliveries only include the three fields above. Do **not** reference `{{trigger.status}}` from downstream steps — it will be `undefined` at runtime.
 
 **Note:** The trigger fires at most once per boot. If a run triggered by **On Agent Start** is still in progress when the agent boots again, the new event is dropped (concurrency guard).
 

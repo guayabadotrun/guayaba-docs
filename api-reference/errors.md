@@ -40,7 +40,7 @@ Subscription-tier guard errors, such as the Hobby daily runtime limit, return `{
 ```json
 {
   "error": "Payment Required",
-  "message": "Insufficient credits for this operation",
+  "message": "Insufficient credits. This operation costs 10 credits, you have 3.",
   "required_credits": 10,
   "available_credits": 3
 }
@@ -61,15 +61,6 @@ Subscription-tier guard errors, such as the Hobby daily runtime limit, return `{
 {
   "error": "Forbidden",
   "message": "This endpoint requires a master API key"
-}
-```
-
-### 403 — No Active Master Key (Agent Key Creation)
-
-```json
-{
-  "error": "Forbidden",
-  "message": "You must have an active master API key before creating agent keys"
 }
 ```
 

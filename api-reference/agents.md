@@ -33,7 +33,11 @@ curl https://api.guayaba.run/api/v1/agents \
       "status": "running",
       "channels": ["telegram"],
       "model_provider": "openrouter",
-      "settings": { "model": "openai/gpt-4.1" },
+      "llm_provider_model": "openai/gpt-4.1",
+      "settings": {
+        "thinking": "medium",
+        "extra_instructions": null
+      },
       "created_at": "2026-03-15T10:30:00Z"
     }
   ],
@@ -43,6 +47,8 @@ curl https://api.guayaba.run/api/v1/agents \
   "total": 1
 }
 ```
+
+The response is the standard Laravel paginator envelope, so it also includes `from`, `to`, `next_page_url`, `prev_page_url`, `path`, and a `links` array. Treat any keys outside the table above as advisory and do not depend on their format.
 
 ---
 
@@ -93,9 +99,40 @@ curl -X POST https://api.guayaba.run/api/v1/agents \
 {
   "success": true,
   "message": "Agent created successfully",
-  "data": { "id": "...", "name": "Support Bot", "status": "created" }
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Support Bot",
+    "personality": "You are a helpful support agent.",
+    "vibe": "Friendly, concise, professional.",
+    "knowledge_seed": ["Refund policy: 30 days."],
+    "channels": [],
+    "model_provider": "openrouter",
+    "llm_provider_model": "openai/gpt-4.1",
+    "status": "created",
+    "settings": {
+      "thinking": "medium",
+      "extra_instructions": null
+    },
+    "secrets_configured": {
+      "OPENROUTER_API_KEY": true
+    },
+    "graft_apply_status": null,
+    "graft_apply_error": null,
+    "last_boot_execution": null,
+    "last_stop_execution": null,
+    "uptime_total_seconds": 0,
+    "created_at": "2026-03-15T10:30:00Z",
+    "updated_at": "2026-03-15T10:30:00Z",
+    "user_id": "USER_UUID",
+    "tenant_id": "TENANT_UUID",
+    "framework": { "id": "FRAMEWORK_UUID", "slug": "openclaw", "name": "OpenClaw" },
+    "framework_id": "FRAMEWORK_UUID",
+    "runtime_capabilities": { "chat": true, "files": true, "logs": true, "sessions": true }
+  }
 }
 ```
+
+`POST /agents`, `PUT /agents/{id}`, and the runtime control endpoints that return the agent (`/start`, `/stop`, `/pause`) all return the same `AgentSafeResource` shape — never raw model fields. The legacy `settings.model` field is **not** returned and is rejected by the validator (`prohibited`); the model lives in `llm_provider_model` at the top level.
 
 **Optional**: pass `graft_slug` (and optionally `graft_overrides`) to apply
 a marketplace template (see [GRAFTs](grafts.md)). The GRAFT's `schema.defaults`
@@ -121,7 +158,7 @@ curl -X PUT https://api.guayaba.run/api/v1/agents/550e8400-... \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Updated Bot",
-    "settings": { "model": "anthropic/claude-sonnet-4.6" }
+    "llm_provider_model": "anthropic/claude-sonnet-4.6"
   }'
 ```
 
@@ -146,7 +183,7 @@ curl -X DELETE https://api.guayaba.run/api/v1/agents/550e8400-... \
 
 ## Runtime Control
 
-All runtime endpoints require `agent:manage` scope (master keys always pass). Runtime actions also depend on the selected framework's capabilities. OpenClaw currently supports start, stop, pause, reload, logs, sessions, files, uploads, and GRAFT export.
+All runtime endpoints — including the read-only `/status`, `/health`, and `/logs` — require `agent:manage` scope on slave keys. `agent:read` is **not** sufficient. Master keys always pass. Runtime actions also depend on the selected framework's capabilities. OpenClaw currently supports start, stop, pause, reload, logs, sessions, files, uploads, and GRAFT export.
 
 ### Get Status
 
@@ -492,7 +529,7 @@ GET /agents/{id}/files/download
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `path` | string | Yes | File path relative to the workspace root. Must not contain `..`. |
+| `path` | string | Yes | File path relative to the workspace root. Must not contain `../` or `..\\`. Max 1 024 characters. |
 
 ```bash
 curl "https://api.guayaba.run/api/v1/agents/550e8400-.../files/download?path=output/report.pdf" \
@@ -514,6 +551,7 @@ Read-only reference data. Any API key type. Responses are cached for 10 minutes.
 |---|---|
 | `GET /catalogs/frameworks` | Available agent frameworks |
 | `GET /catalogs/frameworks/{id}/clients` | Clients for a framework |
+| `GET /frameworks/{slug}/schema` | Wizard / form schema for a framework |
 | `GET /catalogs/regions` | Deployment regions |
 | `GET /catalogs/hardware` | Hardware configurations |
 | `GET /catalogs/models` | Available AI models |

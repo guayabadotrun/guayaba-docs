@@ -72,7 +72,7 @@ When you don't have enough credits for an operation, the API returns:
 402 Payment Required
 {
   "error": "Payment Required",
-  "message": "Insufficient credits for this operation",
+  "message": "Insufficient credits. This operation costs 10 credits, you have 3.",
   "required_credits": 10,
   "available_credits": 3
 }
@@ -84,11 +84,11 @@ The operation is **not** executed. No credits are deducted.
 
 | Plan | Price | Running time | Agents | Credit allowance |
 |---|---|---|---|---|
-| **Hobby** | Free | 1 hour/day | 1 | 2,000 (welcome grant) |
+| **Hobby** | Free | 1 hour/day | 1 | 2,000/month |
 | **Early Access** | $4.90/mo | Unlimited | 1 | 3,000/month |
 | **Pro** | $49.00/mo | Unlimited | 3 | 10,000/month |
 
-Every new account is automatically enrolled on the **Hobby** plan and receives 2,000 one-time welcome credits immediately — no credit card required. Paid plans include recurring subscription credits. You can upgrade at any time from the billing dashboard.
+Every new account is automatically enrolled on the **Hobby** plan and receives its first 2,000 credit allowance immediately — no credit card required. The Hobby allowance renews each billing period along with paid plans. You can upgrade at any time from the billing dashboard.
 
 ### Daily running-time limit (Hobby)
 

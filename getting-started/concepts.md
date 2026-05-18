@@ -37,8 +37,9 @@ The Hobby plan includes 1 hour of combined agent running time per UTC day. Runti
 
 A session is a conversation thread. Each chat message belongs to a session. Sessions let the agent remember context across multiple turns.
 
-- Sessions created via the API have an `api:` prefix.
-- Sessions created via the web UI have a `s-` prefix.
+- Sessions created via the API have an `api:` prefix (e.g. `api:abc123`).
+- Sessions created via the web UI have an `s-` prefix (e.g. `s-1715000000-ab12`).
+- (Inside an agent's workspace, sessions are stored under composite keys like `agent:<agentId>:<key>` — usually only relevant when inspecting raw workspace files.)
 - You can list, rename, archive, and delete sessions from the dashboard or via the API.
 
 ---
@@ -72,7 +73,7 @@ Credits are the billing unit for resource-intensive operations. Base operation c
 | Stop / Pause / Delete | Free |
 | All read operations | Free |
 
-Credits come from your paid subscription allowance (renewed each billing period) plus any top-up purchases. New accounts receive a one-time welcome grant of **2,000 credits** on the Hobby plan. LLM usage credits are charged asynchronously after provider cost data is ready, so a very recent chat can appear in token charts before its cost is reflected in your balance. Check your balance at any time from **Settings → Billing** or via `GET /api/v1/billing/credits`.
+Credits come from your paid subscription allowance (renewed each billing period) plus any top-up purchases. New Hobby accounts get a recurring **2,000 credits per month** allowance, available immediately on signup. LLM usage credits are charged asynchronously after provider cost data is ready, so a very recent chat can appear in token charts before its cost is reflected in your balance. Check your balance at any time from **Settings → Billing** or via `GET /api/v1/billing/credits`.
 
 ---
 

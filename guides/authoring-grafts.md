@@ -289,7 +289,7 @@ section, and position to drop the field into.
 | Key | Notes |
 |---|---|
 | `step` | The wizard step id (e.g. `"identity"`). If the step is not declared in `steps[]`, the wizard creates a synthetic step for the GRAFT. |
-| `section` | Optional section id within the step. **Only valid when `step` points to a step you declared in `steps[]`** — native wizard steps don't expose section ids. The validator returns `422` if you pair `section` with a native step; use `after` / `before` / `order` to position fields inside native steps instead. |
+| `section` | Optional section id within the step. Allowed against either a step you declared in `steps[]` OR a native wizard step — when pointed at a native step, the frontend creates the named section on the fly inside the host step (so you can group your fields under your own header without the host needing to know about it ahead of time). The only hard rule is that `step` must also be set; the validator rejects with `422` if you set `section` without `step`. |
 | `after` / `before` | Anchor field id. Mutually exclusive. |
 | `order` | Tiebreaker integer (lower = earlier). |
 
@@ -427,14 +427,15 @@ channel slots that GRAFT authors can target by id.
 | `channels` | Communication channels | Per-channel toggles + secret forms |
 | `_review` | (auto) | Final review screen — synthetic, do not target |
 
-Sections inside these steps are not addressable by id — if you set
-`placement.section` while pointing `placement.step` at a native step,
-the validator rejects with `422`. Use `placement.after` / `before` /
-`order` to position fields inside native steps. Sections **are**
-addressable when the step is one you declared yourself in `steps[]`
-(see [`steps[]` — wizard layout](#steps--wizard-layout)). If you target
-an undeclared step id, the wizard creates a synthetic step labelled
-**"Template setup"** at the front of the flow, holding every
+Sections inside native steps are not pre-declared, but you can still
+point `placement.section` at a native step — the frontend will create
+the named section on the fly inside the host step (e.g. a "GitHub
+Buddy" section inside the native `model` step). The only hard rule is
+that `placement.section` requires `placement.step` to be set. Sections
+are also addressable when the step is one you declared yourself in
+`steps[]` (see [`steps[]` — wizard layout](#steps--wizard-layout)). If
+you target an undeclared step id, the wizard creates a synthetic step
+labelled **"Template setup"** at the front of the flow, holding every
 unanchored `owned_by: "graft"` field.
 
 ### Native field ids (for `owned_by: "wizard:<id>"`)
@@ -519,7 +520,7 @@ returns a per-field `errors` map you can act on.
 | `fields[N].binding has invalid shape` | Not a dot-separated identifier path. |
 | `fields[N].owned_by must start with graft \| wizard: \| channel:` | Unknown ownership prefix. |
 | `fields[N].placement may set after OR before, not both` | Both anchors set. |
-| `fields[N].placement.section requires step to point to a step declared in this schema's steps[]` | You set `section` while pointing `step` at a native wizard step. Drop `section` and use `after` / `before` / `order`, or declare your own step in `steps[]`. |
+| `fields[N].placement.section requires `step` to be set.` | You set `section` without `step`. Add a `step` (either your own from `steps[]` or a native one). |
 | `defaults references undeclared variables: <id>` | A `{{token}}` in `defaults` has no matching field. |
 | `defaults.channels[N] is not a permitted GRAFT channel` | Today only `telegram` is whitelisted. |
 | Field-cap exceeded (e.g. `personality > 10000 chars`) | Hits the `*FrameworkSchema` per-framework caps. |
