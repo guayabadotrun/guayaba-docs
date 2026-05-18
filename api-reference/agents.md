@@ -2,13 +2,13 @@
 
 ## List Agents
 
-Returns all agents available to the API key's backend account context.
+Returns all agents in the API key's backend account context.
 
 ```
 GET /agents
 ```
 
-**Auth**: Any key (master or agent).
+**Auth**: **Master keys only.** Agent (slave) keys receive HTTP 403. To inspect a single agent, use `GET /agents/{id}` (`agent:read` scope) instead — slave keys can only read their own agent.
 
 **Query parameters**:
 
@@ -151,6 +151,8 @@ PUT /agents/{id}
 **Auth**: Master key only. **Cost**: 10 credits.
 
 **Secrets use PATCH semantics**: send `null` or `""` to delete a secret; omit the key entirely to keep it.
+
+> ℹ️ `agent_id` in the request body is **optional**. The `{id}` URL path parameter is authoritative, and the backend copies it into `agent_id` automatically when the body omits it. If you do send `agent_id` in the body, it must match the URL — otherwise validation fails.
 
 ```bash
 curl -X PUT https://api.guayaba.run/api/v1/agents/550e8400-... \
@@ -457,11 +459,13 @@ POST /agents/{id}/files
 
 ```json
 {
-  "filename": "faq.txt",
-  "content": "Base64 or plain text content...",
-  "mimeType": "text/plain"
+  "filename": "report.pdf",
+  "content": "Base64-encoded bytes...",
+  "mimeType": "application/pdf"
 }
 ```
+
+> ⚠️ **Only `application/pdf` is currently accepted.** The OpenClaw runtime ingests uploaded files exclusively through its `pdfModel` tool, so the launcher rejects any other MIME type with HTTP 400 `Unsupported file type`. Convert text/CSV/JSON inputs to PDF before uploading, or pass them inline through chat.
 
 ### List Workspace Files
 

@@ -69,6 +69,8 @@ All endpoints require the key's backend account context to have an **active subs
 - Regenerating a key revokes the old one and creates a new one.
 - Revoked keys return `401 Unauthorized` immediately.
 
+> ⚠️ **Rotating your master key invalidates every active agent key in that tenant.** After regenerating the master, re-issue any agent keys your downstream services rely on. Plan key rotation as a coordinated deploy — clients holding old `g_agent_*` keys will start receiving `401 Unauthorized` the moment the new master is created.
+
 ## Key Expiration
 
 Keys can optionally be set to expire at a specific date. By default, keys do not expire. Expired keys behave the same as revoked keys (`401`).
