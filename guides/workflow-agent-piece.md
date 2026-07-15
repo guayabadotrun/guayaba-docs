@@ -63,7 +63,7 @@ If the agent is not running after **10 minutes**, the workflow run is marked as 
 
 ### Stop Agent
 
-Stops a running agent. Safe to call if the agent is already stopped — the step is idempotent.
+Stops a running agent. Safe to call if the agent is already `stopping` or `stopped` — the step is idempotent.
 
 **Inputs:**
 
@@ -77,9 +77,11 @@ Stops a running agent. Safe to call if the agent is already stopped — the step
 {
   "agentId": "uuid",
   "previousStatus": "running",
-  "status": "stopped"
+  "status": "stopping"
 }
 ```
+
+The immediate response `status` is `stopping` (the container is being drained). The agent settles to `stopped` a few seconds later once the platform finalizes the shutdown. For an already-stopped or failed agent, `status` echoes the current terminal state.
 
 ---
 

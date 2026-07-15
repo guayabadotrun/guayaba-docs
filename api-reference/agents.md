@@ -234,7 +234,7 @@ Boots the agent or resumes from paused. **Cost**: 5 credits.
 POST /agents/{id}/stop
 ```
 
-Stops the agent and accumulates uptime. **Free.**
+Requests agent shutdown. **Free.** The response returns immediately with the agent in the intermediate `stopping` state; the platform finalizes it to `stopped` a few seconds later (uptime accounting, credit revocation, and IP release happen at that point). Re-calling on an already `stopping`/`stopped` agent is a no-op.
 
 ### Pause Agent
 
@@ -310,6 +310,7 @@ curl "https://api.guayaba.run/api/v1/agents/550e8400-.../logs?level=warn,error&l
 | `starting` | Provisioning / booting |
 | `running` | Running and accepting requests |
 | `paused` | Paused (container alive, gateway not processing messages) |
+| `stopping` | Stop requested; the container is tearing down. The dashboard shows a pending spinner until the platform finalizes the row. Not chattable and not stoppable. |
 | `stopped` | Stopped (no container) |
 | `failed` | Failed to start or crashed |
 

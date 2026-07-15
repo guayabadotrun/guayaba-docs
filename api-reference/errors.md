@@ -19,7 +19,7 @@ Subscription-tier guard errors, such as the Hobby daily runtime limit, return `{
 | `402` | Payment Required | Insufficient credits for the operation |
 | `403` | Forbidden | No active subscription, key lacks required scope, wrong agent, or master key required |
 | `404` | Not Found | Agent or resource does not exist |
-| `409` | Conflict | Agent is not in the required state (e.g., chatting while stopped or starting) |
+| `409` | Conflict | Agent is not in the required state (e.g., chatting while stopped, stopping, or starting) |
 | `422` | Validation Error | Request body failed validation |
 | `502` | Bad Gateway | Agent container returned an error or is unreachable |
 | `503` | Service Unavailable | Agent container is not running |

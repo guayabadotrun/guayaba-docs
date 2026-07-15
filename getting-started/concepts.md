@@ -28,6 +28,7 @@ The Hobby plan includes 1 hour of combined agent running time per UTC day. Runti
 | `starting` | Provisioning or booting |
 | `running` | Live and accepting messages |
 | `paused` | Container alive, not processing messages |
+| `stopping` | Stop requested; container is tearing down. The UI shows a pending spinner until the platform finalizes the row. Cannot chat, cannot start, cannot re-stop. |
 | `stopped` | Container shut down |
 | `failed` | Crashed or failed to start |
 
