@@ -270,9 +270,11 @@ toolkit (`graft validate`, `graft push`). They write into your private
 personal storage area. Personal grafts are not published in the marketplace
 until you submit them for review.
 
-`owner_tenant_id` and storage keys containing `TENANT_ID` are opaque backend
-metadata. You do not need to configure or send any tenant header when using
-these endpoints; the backend derives the owner from your master API key.
+GRAFT authoring is scoped to your **active organization** — the organization of
+the master key you use. Personal GRAFTs are stored under
+`personal/{tenant_id}/…`. You do not need to send any organization header
+explicitly; the key's organization is used automatically. To publish under a
+different organization, mint a master key inside that organization and use it.
 
 All three require a **master** API key. Agent-scoped keys are rejected with `403`.
 Generate a master key from the manager UI: *Account → API Keys → New master key*.

@@ -69,7 +69,17 @@ All endpoints require the key's backend account context to have an **active subs
 - Regenerating a key revokes the old one and creates a new one.
 - Revoked keys return `401 Unauthorized` immediately.
 
-> ⚠️ **Rotating your master key invalidates every active agent key in that tenant.** After regenerating the master, re-issue any agent keys your downstream services rely on. Plan key rotation as a coordinated deploy — clients holding old `g_agent_*` keys will start receiving `401 Unauthorized` the moment the new master is created.
+> ⚠️ **Every master key belongs to an organization. Rotating a master key inside "Acme Inc" invalidates that organization's agent keys only** — keys in other organizations are untouched. After regenerating the master, re-issue any agent keys your downstream services rely on. Plan key rotation as a coordinated deploy: clients holding old `g_agent_*` keys will start receiving `401 Unauthorized` the moment the new master is created.
+
+## Organization Binding
+
+Every API key is bound to exactly one **organization** at creation time. That binding is permanent — a key cannot be moved to another organization, and it can never see resources in an organization it is not bound to.
+
+- **Where a key is scoped.** When you create a master key in the dashboard, it is issued inside the organization currently active in the sidebar profile-avatar switcher. Agent keys inherit the organization of the agent they are attached to.
+- **Which organization does my key belong to?** Call `GET /api/v1/tenant` — the response includes `id`, `name`, `kind` (`personal` or `organization`), and your role.
+- **How do I reach another organization from the API?** Either switch to that organization in the sidebar avatar dropdown and mint a fresh master key from **Settings → API Keys**, or call `POST /api/v1/tenants` to spin up a brand-new organization and then mint a master key inside it. The invoking key does **not** gain access to organizations it did not create keys in.
+
+See [Tenants (Organizations)](tenants.md) for the full organization management API and [Organizations](../getting-started/organizations.md) for the concept.
 
 ## Key Expiration
 

@@ -16,6 +16,8 @@ All endpoints are relative to this base URL.
 
 Go to **Settings → API Keys** in the [Guayaba dashboard](https://app.guayaba.run) and create a **Master Key**.
 
+> Each API key is bound to the organization you are in when you create it. To act on a different organization, switch organizations in the dashboard header and mint a new key. See [Organizations](../getting-started/organizations.md).
+
 ### 2. List your agents
 
 ```bash

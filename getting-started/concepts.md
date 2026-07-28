@@ -4,6 +4,21 @@ A brief reference for the main ideas you'll encounter across Guayaba.
 
 ---
 
+## Organizations
+
+An organization is the container for everything you do on Guayaba: agents, GRAFTs, API keys, subscription, credits, and payment method all live inside an organization. Nothing is shared across organizations implicitly.
+
+Every account has two flavours of organization:
+
+- **Personal** — auto-created at signup, exactly one per user, non-inviteable, non-deletable. Always displayed as literal **Personal** in the UI.
+- **Named organization** — created on demand for collaboration. Any number per user, with a roster and roles.
+
+Every API key is bound to one organization at creation time and can only see that organization's resources. Switch organizations from the profile-avatar dropdown at the bottom of the sidebar in the dashboard.
+
+See [Organizations](organizations.md) for roles, billing, invitations, and everything else.
+
+---
+
 ## Agents
 
 An agent is the central unit. It has:
