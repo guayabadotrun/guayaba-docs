@@ -77,7 +77,7 @@ Creates a new AI agent.
 POST /agents
 ```
 
-**Auth**: Master key only. **Cost**: 10 credits.
+**Auth**: Master key only. **Cost**: $0.01.
 
 ```bash
 curl -X POST https://api.guayaba.run/api/v1/agents \
@@ -148,7 +148,7 @@ Updates an existing agent. Uses PATCH semantics — only provided fields are cha
 PUT /agents/{id}
 ```
 
-**Auth**: Master key only. **Cost**: 10 credits.
+**Auth**: Master key only. **Cost**: $0.01.
 
 **Secrets use PATCH semantics**: send `null` or `""` to delete a secret; omit the key entirely to keep it.
 
@@ -226,7 +226,7 @@ Returns detailed health for a running agent. **Free.**
 POST /agents/{id}/start
 ```
 
-Boots the agent or resumes from paused. **Cost**: 5 credits.
+Boots the agent or resumes from paused. **Cost**: $0.005.
 
 ### Stop Agent
 
@@ -234,7 +234,7 @@ Boots the agent or resumes from paused. **Cost**: 5 credits.
 POST /agents/{id}/stop
 ```
 
-Requests agent shutdown. **Free.** The response returns immediately with the agent in the intermediate `stopping` state; the platform finalizes it to `stopped` a few seconds later (uptime accounting, credit revocation, and IP release happen at that point). Re-calling on an already `stopping`/`stopped` agent is a no-op.
+Requests agent shutdown. **Free.** The response returns immediately with the agent in the intermediate `stopping` state; the platform finalizes it to `stopped` a few seconds later (uptime accounting, balance revocation, and IP release happen at that point). Re-calling on an already `stopping`/`stopped` agent is a no-op.
 
 ### Pause Agent
 
@@ -250,7 +250,7 @@ Pauses without stopping the container. **Free.**
 POST /agents/{id}/reload
 ```
 
-Hot-reloads configuration without restarting. Agent must be running and its framework must support config reload. **Cost**: 1 credit.
+Hot-reloads configuration without restarting. Agent must be running and its framework must support config reload. **Cost**: $0.001.
 
 ### Get Logs
 

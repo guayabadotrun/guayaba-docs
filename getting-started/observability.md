@@ -22,7 +22,7 @@ The Hobby plan includes a daily running-time limit. The limit is counted across 
 
 The daily counter is also effective: it combines already-saved closed sessions with live starting/running time. When the daily limit is reached, Guayaba stops starting or running agents and prevents new starts until the next UTC day.
 
-See [Billing & Credits](../api-reference/billing.md) for plan limits and billing behavior.
+See [Billing & Balance](../api-reference/billing.md) for plan limits and billing behavior.
 
 ## Infrastructure Metrics
 
@@ -36,20 +36,20 @@ Usage data comes from runtime model-call events:
 
 - **Tokens** are reported by the agent runtime after each model call, so they can appear quickly.
 - **Spend** is shown only after provider cost enrichment is complete. For managed provider calls (OpenRouter today), Guayaba enriches the runtime event asynchronously from provider generation data.
-- **Credits** are shown only after the usage billing batch has run.
+- **USD charges** are shown only after the usage billing batch has run.
 
 The summary charts use two different visual meanings:
 
-- **Total Tokens** and **Total Credits** are cumulative running totals for the selected range.
+- **Total Tokens** and **Total Charged** are cumulative running totals for the selected range.
 - **Model Usage** is per-interval token activity by model, shown as stacked bars.
 
-This distinction is intentional: recent tokens may be visible while spend or credits are still processing. The dashboard shows a small processing note in that case and uses empty values rather than showing pending cost as `$0`.
+This distinction is intentional: recent tokens may be visible while spend or charges are still processing. The dashboard shows a small processing note in that case and uses empty values rather than showing pending cost as `$0`.
 
 The dashboard range selector supports `1h`, `6h`, `24h`, `7d`, and `30d`.
 
 ## Data Freshness
 
-Runtime values are calculated live when the dashboard reads them. Token usage is usually available shortly after a model call is observed by the runtime. Cost and credit values can lag behind very recent messages because enrichment and billing run asynchronously.
+Runtime values are calculated live when the dashboard reads them. Token usage is usually available shortly after a model call is observed by the runtime. Cost and charge values can lag behind very recent messages because enrichment and billing run asynchronously.
 
 If an agent is currently running, the most reliable view of remaining Hobby time is the dashboard header or billing/profile area, which refreshes periodically.
 

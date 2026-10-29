@@ -16,7 +16,7 @@ Subscription-tier guard errors, such as the Hobby daily runtime limit, return `{
 | Code | Error | Description |
 |---|---|---|
 | `401` | Unauthorized | Missing, invalid, revoked, or expired API key |
-| `402` | Payment Required | Insufficient credits for the operation |
+| `402` | Payment Required | Insufficient balance for the operation |
 | `403` | Forbidden | No active subscription, key lacks required scope, wrong agent, or master key required |
 | `404` | Not Found | Agent or resource does not exist |
 | `409` | Conflict | Agent is not in the required state (e.g., chatting while stopped, stopping, or starting) |
@@ -35,14 +35,14 @@ Subscription-tier guard errors, such as the Hobby daily runtime limit, return `{
 }
 ```
 
-### 402 — Insufficient Credits
+### 402 — Insufficient Balance
 
 ```json
 {
   "error": "Payment Required",
-  "message": "Insufficient credits. This operation costs 10 credits, you have 3.",
-  "required_credits": 10,
-  "available_credits": 3
+  "message": "Insufficient balance. This operation costs $0.01, you have $0.003.",
+  "required_usd": "0.010000",
+  "available_usd": "0.003000"
 }
 ```
 
@@ -123,6 +123,6 @@ This can happen when `POST /agents/{id}/start` would exceed your plan's running-
 | `403` "lacks the required scope" | Agent key missing the needed scope | Create a new agent key with the correct scopes |
 | `403` "master API key required" | Using an agent key on a master-only endpoint | Use your master key for CRUD and billing operations |
 | `403` "full allowance for today" | Hobby daily runtime limit reached | Wait until midnight UTC or upgrade from Hobby |
-| `402` on create/start | Low credit balance | Check balance with `GET /billing/credits` and top up |
+| `402` on create/start | Low balance | Check balance with `GET /billing/balance` and top up |
 | `409` on chat/reload | Agent is not running | Start the agent first with `POST /agents/{id}/start` |
 | `502` on chat | Agent container crashed or is unresponsive | Check agent health with `GET /agents/{id}/health` |

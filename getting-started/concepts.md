@@ -6,7 +6,7 @@ A brief reference for the main ideas you'll encounter across Guayaba.
 
 ## Organizations
 
-An organization is the container for everything you do on Guayaba: agents, GRAFTs, API keys, subscription, credits, and payment method all live inside an organization. Nothing is shared across organizations implicitly.
+An organization is the container for everything you do on Guayaba: agents, GRAFTs, API keys, subscription, balance, and payment method all live inside an organization. Nothing is shared across organizations implicitly.
 
 Every account has two flavours of organization:
 
@@ -75,21 +75,21 @@ GRAFTs live in the marketplace. You can browse them in the dashboard or access t
 
 ---
 
-## Credits
+## Balance
 
-Credits are the billing unit for resource-intensive operations. Base operation credits are checked before execution; if your balance is insufficient, the request is rejected with `402`. Model-dependent LLM usage can be billed later after runtime usage data is processed.
+Billing is in **USD**. The base charge is checked before execution; if your balance is insufficient, the request is rejected with `402`. Model-dependent LLM usage can be billed later after runtime usage data is processed.
 
 | Operation | Cost |
 |---|---|
-| Create agent | 10 credits |
-| Update agent | 10 credits |
-| Start agent | 5 credits |
-| Reload config | 1 credit |
-| Chat message | 1 credit (base) + LLM usage |
+| Create agent | $0.01 |
+| Update agent | $0.01 |
+| Start agent | $0.005 |
+| Reload config | $0.001 |
+| Chat message | $0.001 (base) + LLM usage |
 | Stop / Pause / Delete | Free |
 | All read operations | Free |
 
-Credits come from your paid subscription allowance (renewed each billing period) plus any top-up purchases. New Hobby accounts get a recurring **2,000 credits per month** allowance, available immediately on signup. LLM usage credits are charged asynchronously after provider cost data is ready, so a very recent chat can appear in token charts before its cost is reflected in your balance. Check your balance at any time from **Settings → Billing** or via `GET /api/v1/billing/credits`.
+Your USD balance comes from your paid subscription allowance (renewed each billing period) plus any top-ups you add. New Hobby accounts get a recurring **$2.00 per month** allowance, available immediately on signup. LLM usage is charged asynchronously after provider cost data is ready, so a very recent chat can appear in token charts before its cost is reflected in your balance. Check your balance at any time from **Settings → Billing** or via `GET /api/v1/billing/balance`.
 
 ---
 

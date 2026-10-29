@@ -16,7 +16,7 @@
 - [Agents](api-reference/agents.md)
 - [Chat](api-reference/chat.md)
 - [GRAFTs](api-reference/grafts.md)
-- [Billing & Credits](api-reference/billing.md)
+- [Billing & Balance](api-reference/billing.md)
 - [Dashboard API](api-reference/manager-api.md)
 - [Errors](api-reference/errors.md)
 

@@ -109,7 +109,7 @@ curl "https://api.guayaba.run/api/v1/grafts?framework=openclaw&category=support&
       },
       "status": "active",
       "tier": "free",
-      "price_credits": 0,
+      "price_usd": 0,
       "installs_count": 142,
       "categories": [{ "slug": "support", "name": "Support" }],
       "frameworks": [
@@ -307,7 +307,7 @@ curl -X POST https://api.guayaba.run/api/v1/grafts/validate \
     "category_slugs": [],
     "framework_slugs": ["openclaw"],
     "tier": "free",
-    "price_credits": 0
+    "price_usd": 0
   },
   "schema": { "schema_version": 2, "defaults": { ... }, "fields": [ ... ] }
 }

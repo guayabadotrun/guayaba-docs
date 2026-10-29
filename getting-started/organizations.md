@@ -1,6 +1,6 @@
 # Organizations
 
-Every Guayaba account is organised into **organizations**. An organization owns its agents, GRAFTs, API keys, subscription, credits, and payment method — resources are never shared implicitly across organizations.
+Every Guayaba account is organised into **organizations**. An organization owns its agents, GRAFTs, API keys, subscription, balance, and payment method — resources are never shared implicitly across organizations.
 
 There are two kinds of organization:
 
@@ -17,9 +17,9 @@ Every membership carries exactly one role. Roles form a strict hierarchy: `owner
 
 | Role | Cardinality | What they can do |
 |---|---|---|
-| **Owner** | Exactly 1 per organization. Transferable. | Everything an admin can do, plus delete the organization, transfer ownership, change the subscription, purchase credits, and manage the payment method. |
+| **Owner** | Exactly 1 per organization. Transferable. | Everything an admin can do, plus delete the organization, transfer ownership, change the subscription, add balance, and manage the payment method. |
 | **Admin** | 0 or more | Rename the organization and change its avatar, mint master API keys, publish GRAFTs, invite people, promote/demote/remove other admins and members. |
-| **Member** | 0 or more | Read the roster, chat with agents, use credits, create agents, mint agent-scoped API keys. Cannot invite anyone, publish GRAFTs, or mint master keys. |
+| **Member** | 0 or more | Read the roster, chat with agents, use the organization balance, create agents, mint agent-scoped API keys. Cannot invite anyone, publish GRAFTs, or mint master keys. |
 
 Ownership is not shared. Transferring the owner role demotes the previous owner to **admin** in the same operation.
 
@@ -30,16 +30,16 @@ Ownership is not shared. Transferring the owner role demotes the previous owner 
 Billing is **per-organization**. Every organization — Personal or named — has:
 
 - Its own Stripe customer and subscription (a named organization starts on the free **Hobby** tier automatically at creation).
-- Its own credit balance and transaction ledger.
+- Its own USD balance and ledger.
 - Its own daily runtime allowance under Hobby limits.
 
 Consequences:
 
-- Credits and running-time budget bought or earned in one organization never leak into another.
-- New named organizations do **not** receive welcome credits — those remain a one-time, one-per-user grant on your Personal organization.
+- Balance and running-time budget bought or earned in one organization never leak into another.
+- New named organizations do **not** receive a welcome allowance — those remain a one-time, one-per-user grant on your Personal organization.
 - Two organizations cannot share a single Stripe customer. If you want teammates to pay for shared usage, create a named organization and add them as members.
 
-See [Billing & Credits](../api-reference/billing.md) for the credit model and current plan pricing.
+See [Billing & Balance](../api-reference/billing.md) for the billing model and current plan pricing.
 
 ---
 
@@ -74,9 +74,9 @@ Everything can be done from the dashboard, and everything except account-level o
 
 ## Frequently asked questions
 
-### Do welcome credits carry over into a new organization?
+### Does the welcome allowance carry over into a new organization?
 
-No. Named organizations are created with an active Hobby subscription but **no** welcome credits. The welcome credit grant is a one-time bonus on your Personal organization at signup.
+No. Named organizations are created with an active Hobby subscription but **no** welcome allowance. The welcome grant is a one-time bonus on your Personal organization at signup.
 
 ### Can I move an existing agent to another organization?
 
@@ -84,7 +84,7 @@ Not today. Agents (and their sessions, files, GRAFT attachments, and API keys) s
 
 ### What happens when I leave an organization?
 
-Your membership row is removed and you can no longer see the organization's agents, credits, or billing. Master keys you minted while a member remain bound to that organization; they keep working until either:
+Your membership row is removed and you can no longer see the organization's agents, balance, or billing. Master keys you minted while a member remain bound to that organization; they keep working until either:
 
 - an owner or admin of that organization revokes them, or
 - you leave via `POST /api/v1/tenant/leave`, which revokes the invoking key in the same transaction.
@@ -97,4 +97,4 @@ You cannot. Deletion is a soft-delete for audit purposes: financial history is p
 
 ### Can two organizations share the same Stripe customer?
 
-No. Every organization owns its own Stripe customer, subscription, and credit balance. Purchases, invoices, and payment methods do not cross organization boundaries.
+No. Every organization owns its own Stripe customer, subscription, and USD balance. Purchases, invoices, and payment methods do not cross organization boundaries.

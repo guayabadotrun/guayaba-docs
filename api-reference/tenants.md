@@ -416,7 +416,7 @@ curl -X POST https://api.guayaba.run/api/v1/tenants \
 }
 ```
 
-The organization is provisioned with an active Hobby subscription and **no** welcome credits.
+The organization is provisioned with an active Hobby subscription and **no** welcome allowance.
 
 **Errors**:
 - `409` — the requested slug is already taken.

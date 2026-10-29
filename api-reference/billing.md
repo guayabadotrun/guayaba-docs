@@ -1,34 +1,34 @@
-# Billing & Credits
+# Billing & Balance
 
-API operations that consume resources are billed in **credits**. Base operation credits are checked before execution; if your balance is insufficient, the request is rejected with `402`. Model-dependent LLM usage can be billed later after runtime usage data is processed.
+API operations that consume resources are billed in **USD**. The base charge is checked before execution; if your balance is insufficient, the request is rejected with `402`. Model-dependent LLM usage can be billed later after runtime usage data is processed.
 
-## Credit Costs
+## Costs
 
-| Operation | Credits | Endpoint |
+| Operation | Cost | Endpoint |
 |---|---|---|
-| Create agent | 10 | `POST /agents` |
-| Update agent | 10 | `PUT /agents/{id}` |
-| Start agent | 5 | `POST /agents/{id}/start` |
-| Reload config | 1 | `POST /agents/{id}/reload` |
-| Chat message | 1 + LLM cost | `POST /agents/{id}/chat` |
-| Stop / Pause / Delete agent | 0 | — |
-| All read operations (GET) | 0 | — |
-| Key management | 0 | — |
+| Create agent | $0.01 | `POST /agents` |
+| Update agent | $0.01 | `PUT /agents/{id}` |
+| Start agent | $0.005 | `POST /agents/{id}/start` |
+| Reload config | $0.001 | `POST /agents/{id}/reload` |
+| Chat message | $0.001 + LLM cost | `POST /agents/{id}/chat` |
+| Stop / Pause / Delete agent | $0 | — |
+| All read operations (GET) | $0 | — |
+| Key management | $0 | — |
 
-> Credit costs are provisional and subject to change.
+> Costs are provisional and subject to change.
 
-**Chat billing note**: The base credit (1) is charged on successful completion. The LLM cost (model-dependent token usage) is recorded by the runtime and charged asynchronously after provider cost data is ready, same as when using the web UI.
+**Chat billing note**: The $0.001 base charge is applied on successful completion. The LLM cost (model-dependent token usage) is recorded by the runtime and charged asynchronously after provider cost data is ready, same as when using the web UI.
 
 ## Checking Your Balance
 
 ```
-GET /billing/credits
+GET /billing/balance
 ```
 
 **Auth**: Master key only.
 
 ```bash
-curl https://api.guayaba.run/api/v1/billing/credits \
+curl https://api.guayaba.run/api/v1/billing/balance \
   -H "Authorization: Bearer g_master_YOUR_KEY"
 ```
 
@@ -37,9 +37,9 @@ curl https://api.guayaba.run/api/v1/billing/credits \
 {
   "success": true,
   "data": {
-    "total_credits": 450,
-    "subscription_credits": 400,
-    "purchased_credits": 50
+    "balance_usd": "0.450000",
+    "subscription_usd": "0.400000",
+    "purchased_usd": "0.050000"
   }
 }
 ```
@@ -60,35 +60,35 @@ Returns the current subscription details for your backend account context (tier,
 GET /billing/tiers
 ```
 
-Returns all subscription tiers with pricing, credit allowances, and feature lists.
+Returns all subscription tiers with pricing, USD allowances, and feature lists.
 
 **Auth**: Master key only.
 
-## Insufficient Credits
+## Insufficient Balance
 
-When you don't have enough credits for an operation, the API returns:
+When your balance does not cover an operation, the API returns:
 
 ```
 402 Payment Required
 {
   "error": "Payment Required",
-  "message": "Insufficient credits. This operation costs 10 credits, you have 3.",
-  "required_credits": 10,
-  "available_credits": 3
+  "message": "Insufficient balance. This operation costs $0.01, you have $0.003.",
+  "required_usd": "0.010000",
+  "available_usd": "0.003000"
 }
 ```
 
-The operation is **not** executed. No credits are deducted.
+The operation is **not** executed. Nothing is deducted.
 
 ## Subscription Plans
 
-| Plan | Price | Running time | Agents | Credit allowance |
+| Plan | Price | Running time | Agents | USD allowance |
 |---|---|---|---|---|
-| **Hobby** | Free | 1 hour/day | 1 | 2,000/month |
-| **Early Access** | $4.90/mo | Unlimited | 1 | 3,000/month |
-| **Pro** | $49.00/mo | Unlimited | 3 | 10,000/month |
+| **Hobby** | Free | 1 hour/day | 1 | $2.00/month |
+| **Early Access** | $4.90/mo | Unlimited | 1 | $3.00/month |
+| **Pro** | $49.00/mo | Unlimited | 3 | $10.00/month |
 
-Every new account is automatically enrolled on the **Hobby** plan and receives its first 2,000 credit allowance immediately — no credit card required. The Hobby allowance renews each billing period along with paid plans. You can upgrade at any time from the billing dashboard.
+Every new account is automatically enrolled on the **Hobby** plan and receives its first $2.00 allowance immediately — no credit card required. The Hobby allowance renews each billing period along with paid plans. You can upgrade at any time from the billing dashboard.
 
 ### Daily running-time limit (Hobby)
 

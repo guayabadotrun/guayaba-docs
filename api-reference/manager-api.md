@@ -32,9 +32,9 @@ Returns a paginated list of agents in your current backend account context with 
 - `infrastructure.available`: whether infrastructure metrics are available for this environment.
 - `usage.totals.tokens`: runtime-reported token total for the range when available.
 - `usage.totals.usage_usd`: ready provider spend for the range; `null` while recent cost enrichment is still pending.
-- `usage.totals.credits`: credits already charged by LLM usage billing; `null` while billing is still pending.
+- `usage.totals.charged_usd`: USD already charged by LLM usage billing; `null` while billing is still pending.
 - `usage.pending.enrichment_count`: persisted events waiting for provider cost enrichment.
-- `usage.pending.billing_count`: persisted or enriched events waiting for credit billing.
+- `usage.pending.billing_count`: persisted or enriched events waiting for billing.
 
 ```json
 {
@@ -69,7 +69,7 @@ Returns a paginated list of agents in your current backend account context with 
         "totals": {
           "tokens": 2000,
           "usage_usd": null,
-          "credits": null
+          "charged_usd": null
         },
         "pending": {
           "enrichment_count": 1,
@@ -97,7 +97,7 @@ Returns the detailed observability data shown in an agent's Resources tab.
 |---|---|---|---|
 | `range` | `1h`, `6h`, `24h`, `7d`, `30d` | `24h` | Time range for metric series |
 
-The response has the same `agent`, `infrastructure`, and `usage` concepts as `GET /observability/agents`, but includes time-series data under `infrastructure.metrics` and `usage.series`. Token and credit series are cumulative running totals over the selected range. Spend series use per-bucket ready provider spend. Pending spend or credit points use `null` until cost enrichment and billing are ready, so pending usage is not displayed as zero spend.
+The response has the same `agent`, `infrastructure`, and `usage` concepts as `GET /observability/agents`, but includes time-series data under `infrastructure.metrics` and `usage.series`. Token and USD-charge series are cumulative running totals over the selected range. Spend series use per-bucket ready provider spend. Pending spend or charge points use `null` until cost enrichment and billing are ready, so pending usage is not displayed as zero spend.
 
 ## Dashboard Observability Summary
 
@@ -129,12 +129,12 @@ Returns current-context LLM usage series for the dashboard Observability page.
       "series": {
         "tokens": { "unit": "tokens", "points": [{ "timestamp": "2026-05-07T09:30:00Z", "value": 2000 }] },
         "usage_usd": { "unit": "USD", "points": [{ "timestamp": "2026-05-07T09:30:00Z", "value": null }] },
-        "credits": { "unit": "credits", "points": [{ "timestamp": "2026-05-07T09:30:00Z", "value": null }] }
+        "charged_usd": { "unit": "USD", "points": [{ "timestamp": "2026-05-07T09:30:00Z", "value": null }] }
       },
       "totals": {
         "tokens": 2000,
         "usage_usd": null,
-        "credits": null
+        "charged_usd": null
       },
       "pending": {
         "enrichment_count": 1,
@@ -149,7 +149,7 @@ Returns current-context LLM usage series for the dashboard Observability page.
 }
 ```
 
-Token and credit chart points are cumulative running totals. `model_series.models[].points` stay per-interval token counts by model for the Model Usage stacked bars, and `agent_activity.agents[].points` are cumulative call counts.
+Token and USD-charge chart points are cumulative running totals. `model_series.models[].points` stay per-interval token counts by model for the Model Usage stacked bars, and `agent_activity.agents[].points` are cumulative call counts.
 
 ## OpenRouter Usage Proxy
 

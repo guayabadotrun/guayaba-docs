@@ -24,14 +24,14 @@
 | `README.md` | Landing page (what is Guayaba, links to sections) |
 | `SUMMARY.md` | GitBook table of contents — edit this when adding pages |
 | `getting-started/quick-start.md` | Create first agent, connect Telegram |
-| `getting-started/concepts.md` | Agents, sessions, GRAFTs, credits, API keys explained |
+| `getting-started/concepts.md` | Agents, sessions, GRAFTs, balance, API keys explained |
 | `getting-started/observability.md` | Dashboard observability surfaces explained |
 | `api-reference/introduction.md` | Base URL, quick start curls, OpenAPI link |
 | `api-reference/authentication.md` | Key types (master/agent), scopes, subscription rules |
 | `api-reference/agents.md` | Agent CRUD, runtime, sessions, archives, channels, files, catalogs |
 | `api-reference/chat.md` | Chat endpoint: sync + SSE streaming, sessions, tool calls |
 | `api-reference/grafts.md` | Marketplace API + authoring (validate, push, assets) |
-| `api-reference/billing.md` | Credits, costs, subscription |
+| `api-reference/billing.md` | Balance, costs, subscription |
 | `api-reference/errors.md` | All HTTP error codes with examples |
 | `api-reference/manager-api.md` | Dashboard API (Sanctum-authenticated observability endpoints) |
 | `guides/authoring-grafts.md` | Full schema v2 reference: fields, types, placement, validation |

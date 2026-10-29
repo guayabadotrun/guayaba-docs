@@ -45,14 +45,14 @@ curl -X POST https://api.guayaba.run/api/v1/agents/{id}/chat \
 
 - An active Guayaba subscription (any tier).
 - At least one API key (Master or Agent).
-- Sufficient credits for billed operations.
+- Sufficient balance for billed operations.
 
 ## What's Next
 
 - [Authentication](authentication.md) — Key types, scopes, and how auth works.
 - [Agents](agents.md) — Create, update, delete, and control your agents.
 - [Chat](chat.md) — Send messages with sync and streaming responses.
-- [Billing & Credits](billing.md) — How credits work and what operations cost.
+- [Billing & Balance](billing.md) — How billing works and what operations cost.
 - [Dashboard API](manager-api.md) — Session-authenticated dashboard-only observability endpoints.
 - [Errors](errors.md) — Error format and status codes.
 
