@@ -376,6 +376,10 @@ POST /agents/{id}/sessions/delete
 GET /agents/{id}/archives
 ```
 
+Each archive carries a `filename` field. It is an opaque archive identifier —
+for OpenClaw it is the archived session's key — and is what you pass back to
+restore or delete the archive.
+
 ### Restore Archive
 
 ```
@@ -383,8 +387,11 @@ POST /agents/{id}/archives/restore
 ```
 
 ```json
-{ "filename": "archive-file.json", "label": "Restored Session" }
+{ "filename": "agent:8f87bfd3:main", "label": "Restored Session" }
 ```
+
+Restoring clears the archived marker on the same session and transcript; it
+does not create a new session.
 
 ### Delete Archive
 
@@ -393,7 +400,7 @@ POST /agents/{id}/archives/delete
 ```
 
 ```json
-{ "filename": "archive-file.json" }
+{ "filename": "agent:8f87bfd3:main" }
 ```
 
 ---
