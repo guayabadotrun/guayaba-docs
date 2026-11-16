@@ -6,7 +6,7 @@ A brief reference for the main ideas you'll encounter across Guayaba.
 
 ## Organizations
 
-An organization is the container for everything you do on Guayaba: agents, GRAFTs, API keys, subscription, balance, and payment method all live inside an organization. Nothing is shared across organizations implicitly.
+An organization is the container for everything you do on Guayaba: agents, API keys, subscription, balance, and payment method all live inside an organization. Nothing is shared across organizations implicitly.
 
 Every account has two flavours of organization:
 
@@ -26,7 +26,7 @@ An agent is the central unit. It has:
 - **Identity** — a name, personality, and vibe (tone/style).
 - **Knowledge** — a set of seed entries the agent always has in context.
 - **Model** — the LLM provider, model name, and thinking level.
-- **Channels** — external communication surfaces such as Telegram. Web chat is built into the runtime and is not a GRAFT channel.
+- **Channels** — external communication surfaces such as Telegram. Web chat is built into the runtime and is not a channel.
 - **Tools / Skills** — capabilities like web search, code execution, or custom API calls.
 
 Agents run in isolated containers and can be started, stopped, paused, and reloaded independently.
@@ -57,21 +57,6 @@ A session is a conversation thread. Each chat message belongs to a session. Sess
 - Sessions created via the web UI have an `s-` prefix (e.g. `s-1715000000-ab12`).
 - (Inside an agent's workspace, sessions are stored under composite keys like `agent:<agentId>:<key>` — usually only relevant when inspecting raw workspace files.)
 - You can list, rename, archive, and delete sessions from the dashboard or via the API.
-
----
-
-## GRAFTs
-
-A GRAFT is a reusable agent template. It bundles a pre-configured agent definition (personality, model, channels, skills) with a declarative schema that defines the inputs a user needs to supply at install time — things like a company name, a bot token, or a custom instruction.
-
-When you create an agent from a GRAFT:
-1. The GRAFT's defaults fill in any fields you don't override.
-2. Any `{{placeholder}}` tokens in the personality or instructions are replaced with the values you provided.
-3. Skills bundled in the GRAFT are installed in the agent's container.
-
-GRAFTs live in the marketplace. You can browse them in the dashboard or access them via the API.
-
-**Authors**: see [Authoring GRAFTs](../guides/authoring-grafts.md) for how to build and publish your own.
 
 ---
 
@@ -121,7 +106,7 @@ Use agent keys to give third-party systems or automations the minimum access the
 
 ## Frameworks
 
-A framework is the runtime environment that hosts your agent. It defines what tools are available, what model parameters are accepted, which external channels can be connected, and which runtime capabilities are supported, such as chat, sessions, files, logs, reload, and GRAFT export.
+A framework is the runtime environment that hosts your agent. It defines what tools are available, what model parameters are accepted, which external channels can be connected, and which runtime capabilities are supported, such as chat, sessions, files, logs, and reload.
 
 Currently, **OpenClaw** is the only available framework. It supports Telegram, web chat, sessions, workspace files, logs, config reload, and a built-in set of tools (web search, code execution, file access, and more).
 
@@ -131,4 +116,4 @@ Currently, **OpenClaw** is the only available framework. It supports Telegram, w
 
 Skills are packaged tool sets that extend what your agent can do. A skill is a tarball containing tool definitions, supporting code, and optional binary dependencies. Skills are installed in the agent's container at boot.
 
-You can write your own skills and bundle them in a GRAFT, or install them manually on an agent via the dashboard.
+You can write your own skills and install them on an agent via the dashboard.

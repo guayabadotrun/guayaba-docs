@@ -1,6 +1,6 @@
 # Organizations
 
-Every Guayaba account is organised into **organizations**. An organization owns its agents, GRAFTs, API keys, subscription, balance, and payment method — resources are never shared implicitly across organizations.
+Every Guayaba account is organised into **organizations**. An organization owns its agents, API keys, subscription, balance, and payment method — resources are never shared implicitly across organizations.
 
 There are two kinds of organization:
 
@@ -18,8 +18,8 @@ Every membership carries exactly one role. Roles form a strict hierarchy: `owner
 | Role | Cardinality | What they can do |
 |---|---|---|
 | **Owner** | Exactly 1 per organization. Transferable. | Everything an admin can do, plus delete the organization, transfer ownership, change the subscription, add balance, and manage the payment method. |
-| **Admin** | 0 or more | Rename the organization and change its avatar, mint master API keys, publish GRAFTs, invite people, promote/demote/remove other admins and members. |
-| **Member** | 0 or more | Read the roster, chat with agents, use the organization balance, create agents, mint agent-scoped API keys. Cannot invite anyone, publish GRAFTs, or mint master keys. |
+| **Admin** | 0 or more | Rename the organization and change its avatar, mint master API keys, invite people, promote/demote/remove other admins and members. |
+| **Member** | 0 or more | Read the roster, chat with agents, use the organization balance, create agents, mint agent-scoped API keys. Cannot invite anyone or mint master keys. |
 
 Ownership is not shared. Transferring the owner role demotes the previous owner to **admin** in the same operation.
 
@@ -45,7 +45,7 @@ See [Billing & Balance](../api-reference/billing.md) for the billing model and c
 
 ## API keys are organization-bound
 
-Every master key (`g_master_…`) belongs to exactly one organization at the moment it is created. Any request made with that key acts on that organization — its agents, its billing, its GRAFTs. A master key can never be used to reach a different organization.
+Every master key (`g_master_…`) belongs to exactly one organization at the moment it is created. Any request made with that key acts on that organization — its agents, its billing. A master key can never be used to reach a different organization.
 
 To operate against another organization, either:
 
@@ -80,7 +80,7 @@ No. Named organizations are created with an active Hobby subscription but **no**
 
 ### Can I move an existing agent to another organization?
 
-Not today. Agents (and their sessions, files, GRAFT attachments, and API keys) stay in the organization where they were created. If you need the same setup elsewhere, recreate the agent in the target organization — using a GRAFT is the fastest way.
+Not today. Agents (and their sessions, files, and API keys) stay in the organization where they were created. If you need the same setup elsewhere, recreate the agent in the target organization.
 
 ### What happens when I leave an organization?
 

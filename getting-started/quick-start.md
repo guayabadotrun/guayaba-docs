@@ -13,7 +13,7 @@ Hobby includes 1 hour of combined agent running time per UTC day. You can see yo
 From the dashboard, click **New Agent**. You'll go through a short wizard:
 
 1. **Choose a framework** — Select **OpenClaw** (the default, and the only framework currently available).
-2. **Pick a starting point** — You can start from a blank agent or select a GRAFT from the marketplace. GRAFTs are pre-configured templates; a blank agent gives you a clean slate.
+2. **Pick a starting point** — Start from a blank agent.
 3. **Identity** — Give your agent a name and describe its personality and vibe.
 4. **Knowledge** — Optionally add seed knowledge entries (facts, policies, context your agent should always remember).
 5. **Model** — Choose the LLM and thinking level.
@@ -52,7 +52,6 @@ Your Telegram users can now chat with the agent directly.
 
 ## What's next?
 
-- **[Core Concepts](concepts.md)** — Understand agents, sessions, GRAFTs, and balance.
+- **[Core Concepts](concepts.md)** — Understand agents, sessions, and balance.
 - **[Observability](observability.md)** — Track runtime, resource metrics, and LLM usage.
 - **[API Reference](../api-reference/introduction.md)** — Automate everything programmatically.
-- **[Authoring GRAFTs](../guides/authoring-grafts.md)** — Package and publish your agent as a reusable template.

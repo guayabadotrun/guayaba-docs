@@ -39,7 +39,7 @@ Add a **Start Agent** step before **Send Message** to handle this automatically.
 
 ### Start Agent
 
-Starts a stopped or failed agent. The step **waits** for the agent to become ready before continuing — typical boot times range from a couple of minutes (warm path) to several minutes for cold containers or first-boot GRAFT applies. The hard upper bound is 10 minutes (see below).
+Starts a stopped or failed agent. The step **waits** for the agent to become ready before continuing — typical boot times range from a couple of minutes (warm path) to several minutes for cold containers. The hard upper bound is 10 minutes (see below).
 
 **How it works:**
 

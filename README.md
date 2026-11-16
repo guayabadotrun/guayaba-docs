@@ -9,15 +9,13 @@
 - **Collaborate in shared organizations** — invite teammates, share billing and agents inside an organization.
 - **Use the public API** — manage agents, send messages, and automate workflows programmatically.
 - **Monitor runtime and usage** — track agent status, runtime, infrastructure metrics, and LLM usage from the dashboard.
-- **Build and publish GRAFTs** — reusable agent templates that pre-configure everything so others can spin up a working agent in seconds.
 
 ## Where to start
 
 - **[Quick Start](getting-started/quick-start.md)** — Create your first agent and talk to it in under 5 minutes.
-- **[Core Concepts](getting-started/concepts.md)** — Agents, sessions, GRAFTs, balance, and API keys explained.
+- **[Core Concepts](getting-started/concepts.md)** — Agents, sessions, balance, and API keys explained.
 - **[Observability](getting-started/observability.md)** — Understand runtime, Hobby limits, and usage metrics.
 - **[API Reference](api-reference/introduction.md)** — Full reference for the public REST API.
-- **[Authoring GRAFTs](guides/authoring-grafts.md)** — Build and publish reusable agent templates.
 
 ## Platform URL
 

@@ -116,8 +116,6 @@ curl -X POST https://api.guayaba.run/api/v1/agents \
     "secrets_configured": {
       "OPENROUTER_API_KEY": true
     },
-    "graft_apply_status": null,
-    "graft_apply_error": null,
     "last_boot_execution": null,
     "last_stop_execution": null,
     "uptime_total_seconds": 0,
@@ -133,10 +131,6 @@ curl -X POST https://api.guayaba.run/api/v1/agents \
 ```
 
 `POST /agents`, `PUT /agents/{id}`, and the runtime control endpoints that return the agent (`/start`, `/stop`, `/pause`) all return the same `AgentSafeResource` shape — never raw model fields. The legacy `settings.model` field is **not** returned and is rejected by the validator (`prohibited`); the model lives in `llm_provider_model` at the top level.
-
-**Optional**: pass `graft_slug` (and optionally `graft_overrides`) to apply
-a marketplace template (see [GRAFTs](grafts.md)). The GRAFT's `schema.defaults`
-fill in any field omitted in the request; fields you provide always win.
 
 ---
 
@@ -185,7 +179,7 @@ curl -X DELETE https://api.guayaba.run/api/v1/agents/550e8400-... \
 
 ## Runtime Control
 
-All runtime endpoints — including the read-only `/status`, `/health`, and `/logs` — require `agent:manage` scope on slave keys. `agent:read` is **not** sufficient. Master keys always pass. Runtime actions also depend on the selected framework's capabilities. OpenClaw currently supports start, stop, pause, reload, logs, sessions, files, uploads, and GRAFT export.
+All runtime endpoints — including the read-only `/status`, `/health`, and `/logs` — require `agent:manage` scope on slave keys. `agent:read` is **not** sufficient. Master keys always pass. Runtime actions also depend on the selected framework's capabilities. OpenClaw currently supports start, stop, pause, reload, logs, sessions, files, and uploads.
 
 ### Get Status
 
