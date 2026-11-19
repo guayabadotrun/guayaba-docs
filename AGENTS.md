@@ -7,7 +7,7 @@
 **Critical rules:**
 - **English only.** Every word in this repo must be in English.
 - **Keep internal docs out.** Architecture decisions, contracts, and debt go in `gene-seed/internal/`, not here.
-- **Keep in sync with `convolution-api`.** The source of truth for API contracts is `gene-seed/internal/contracts/` and the backend source.
+- **Keep in sync with `backend-api`.** The source of truth for API contracts is `gene-seed/internal/contracts/` and the backend source.
 - **Update `SUMMARY.md` when adding pages.** GitBook uses it as its table of contents.
 
 > Platform map: `gene-seed/AGENTS.md`
@@ -43,4 +43,4 @@
 ### Source of truth for API contracts
 
 `gene-seed/internal/contracts/inter-service-api.md` — verified against source code.
-Public API OpenAPI spec: `convolution-api/docs/features/openapi-v1.yaml`.
+Public API OpenAPI spec: `backend-api/docs/features/openapi-v1.yaml`.
