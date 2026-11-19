@@ -44,3 +44,9 @@
 
 `gene-seed/internal/contracts/inter-service-api.md` — verified against source code.
 Public API OpenAPI spec: `backend-api/docs/features/openapi-v1.yaml`.
+
+## Done means
+
+- `node dev-tools/scripts/check-links.mjs guayaba-docs` passes (the checker lives in the sibling `dev-tools` repo).
+- Every page follows its internal entry in `gene-seed`; no platform fact is copied without one.
+- No secret, token or `.env` value in the diff.
